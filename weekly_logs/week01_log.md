@@ -2,16 +2,16 @@
 
 **Week:** 1  
 **Date range:** [Add dates]  
-**Team:** Data Nexus / 02 
+**Team:** Data Nexus / 02
 **Project:** TripPulse: Urban Mobility Analytics
 
 ---
 
 ## 1. Sprint Goal
 
-Write the goal for this week in 2–3 lines.
+The goal of Week 1 is to understand the TripPulse project requirements, set up the GitHub repository, and complete the initial project documentation. The team will finalize the README, Problem Charter, and Week 1 log files for mentor review.
 
----
+
 
 ## 2. Work Completed
 
