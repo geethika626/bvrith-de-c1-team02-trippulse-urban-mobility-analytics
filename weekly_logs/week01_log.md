@@ -2,8 +2,8 @@
 
 **Week:** 1  
 **Date range:** [Add dates]  
-**Team:** [Team name / number]  
-**Project:** [Project title]
+**Team:** Data Nexus / 02 
+**Project:** TripPulse: Urban Mobility Analytics
 
 ---
 
