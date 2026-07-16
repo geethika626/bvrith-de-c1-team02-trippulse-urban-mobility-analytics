@@ -1,6 +1,10 @@
 # Week 01 Screenshots
 week01_folder_structure.png
+
 week01_log_completed.png
+
 week01_problem_charter.png
+
 week01_readme_updated.png
+
 week01_repo_created.png
