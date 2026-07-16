@@ -6,7 +6,7 @@
 **Program:** ZENAIZ x BVRIT Hyderabad Data Engineering Internship Program  
 **Track:** Data Engineering  
 **Duration:** 12 Weeks  
-**Team:** Team - 02  
+**Team:** Team - 02 : Data Nexus 
 **Students:** Ms.N.Geethika, Ms.Badugu Sameeksha, Ms.Shaik Sameera  
 **AI Teammate:** Used responsibly for explanation, debugging, review, and documentation support.
 
@@ -14,14 +14,12 @@
 
 ## 1. Project Summary
 
-Write 5–8 lines explaining the assigned project.
+TripPulse – Urban Mobility Analytics is a Data Engineering project that simulates a ride-hailing platform like Ola, Uber, and Rapido using synthetic data. It transforms raw trip, driver, zone, and payment data into trusted business insights through a Bronze → Silver → Data Quality → Gold pipeline using Databricks and Spark SQL. The project analyzes ride demand, driver performance, surge pricing, and live ride metrics, which are visualized using Power BI dashboards. It also includes a streaming simulation of ride request events to demonstrate real-time data processing and analytics.
 
-Example structure:
-
-- **Domain:** [Urban Mobility / IPL Matchday / Weather / etc.]
-- **Core engineering problem:** [What raw data needs to become trusted insight?]
+- **Domain:** Urban Mobility Analytics (Ride-hailing Operations)
+- **Core engineering problem:** Transform raw trip, driver, zone, and payment data containing inconsistencies into trusted, decision-ready business insights through data cleaning, validation, and metric generation.
 - **Main pipeline:** Raw Sources → Bronze → Silver → Data Quality → Gold → Power BI → Streaming Simulation
-- **Final outcome:** GitHub repo, Databricks notebooks, Gold outputs, Power BI dashboard, streaming simulation, final demo.
+- **Final outcome:** GitHub repo, Databricks notebooks, Gold outputs, Power BI dashboard(Demand, Driver Operations, Surge, and Live Ride Feed views), streaming simulation, final demo.
 
 ---
 
