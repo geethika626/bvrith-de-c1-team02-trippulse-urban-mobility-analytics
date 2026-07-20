@@ -103,8 +103,6 @@
 | is_completed_trip | boolean | derived from trip_status | Indicates whether the trip was successfully completed |
 ```
 
----
-
 ## 6. Streaming Event Schema: ride_request_event_drop_01.json
 
 | Field Name | Data Type | Required? | Example | Description |
