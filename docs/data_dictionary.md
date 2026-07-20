@@ -84,17 +84,24 @@
 
 ## 5. Canonical Silver Table Design
 
-Final Silver table name:
-
-```text
-silver_[project_specific_table_name]
+| Silver Field | Type | Source Mapping | Business Meaning |
+|--------------|------|---------------|----------------|
+| trip_id | string | trips.trip_id | Unique trip identifier |
+| request_date | date | date(trips.request_ts) | Date used for analytics and reporting |
+| driver_id | string | trips.driver_id | Assigned driver's identifier |
+| pickup_zone_name | string | join zones on pickup_zone_id | Pickup location of the trip |
+| dropoff_zone_name | string | join zones on dropoff_zone_id | Destination location of the trip |
+| service_type | string | trips.service_type | Type of ride requested |
+| trip_status | string | upper(trips.trip_status) | Standardized trip status |
+| estimated_distance_km | double | trips.estimated_distance_km | Estimated travel distance |
+| actual_distance_km | double | trips.actual_distance_km | Actual completed travel distance |
+| estimated_fare_inr | double | trips.estimated_fare_inr | Estimated trip fare |
+| final_fare_inr | double | trips.final_fare_inr | Final fare charged to the customer |
+| payment_status | string | join payments on trip_id | Status of payment transaction |
+| surge_multiplier | double | trips.surge_multiplier | Dynamic pricing factor |
+| driver_rating | double | join drivers on driver_id | Driver's latest rating |
+| is_completed_trip | boolean | derived from trip_status | Indicates whether the trip was successfully completed |
 ```
-
-| Silver Field | Data Type | Source Mapping | Business Meaning |
-|---|---|---|---|
-| `record_id` | string | `[source field]` | Canonical record ID |
-| `event_date` | date | `[source field]` | Date used for analytics |
-| `[silver_field]` | [type] | [mapping] | [meaning] |
 
 ---
 
@@ -112,8 +119,6 @@ silver_[project_specific_table_name]
 ---
 
 ## 7. Streaming Event Schema: ride_request_event_drop_02.json
-
-The schema matches `ride_request_event_drop_01.json` and represents the second controlled incremental event drop used for streaming simulation.
 
 | Field Name | Data Type | Required? | Example | Description |
 |------------|-----------|-----------|---------|-------------|
