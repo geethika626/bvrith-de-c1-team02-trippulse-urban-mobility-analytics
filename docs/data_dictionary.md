@@ -101,7 +101,7 @@
 | surge_multiplier | double | trips.surge_multiplier | Dynamic pricing factor |
 | driver_rating | double | join drivers on driver_id | Driver's latest rating |
 | is_completed_trip | boolean | derived from trip_status | Indicates whether the trip was successfully completed |
-```
+
 
 ## 6. Streaming Event Schema: ride_request_event_drop_01.json
 
