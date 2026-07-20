@@ -47,10 +47,10 @@
 | lifetime_completed_trips | integer | Yes | 2135 | Total completed trips |
 | last_status_update_ts | timestamp | Yes | 2026-01-28T15:05:00.000Z | Last driver status update timestamp |
 | source_record_version | integer | Yes | 1 | Source record version number |
+| effective_from | timestamp | Yes | 2026-01-01 | Date from which the zone definition is effective |
 
 ---
 
-| effective_from | timestamp | Yes | 2026-01-01 | Date from which the zone definition is effective |
 
 
 ## 4. Raw File Schema: payments.csv
