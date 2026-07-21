@@ -1,7 +1,7 @@
 # Synthetic Data Assumptions
 
 **Week:** 2  
-**Purpose:** Document how educational data is created.
+**Purpose:** Document how synthetic data is generated and the assumptions followed for the TripPulse Urban Mobility Analytics project.
 
 ---
 
@@ -15,14 +15,15 @@ This project uses synthetic educational data generated for learning, experimenta
 
 | Area | Assumption |
 |---|---|
-| Geography / Scope | Fictional urban mobility platform operating across fictional city zones |
+| Platform | Fictional ride-hailing platform named TripPulse providing urban mobility services |
+| Geography / Scope | Operations are simulated across fictional city zones for educational purposes |
 | Time Period | January 2026 – June 2026 |
-| Source Systems | Trip Management System, Driver Management System, Payment System, Zone Reference System and Ride Event Streaming System |
-| Service Types | Economy, Sedan and Premium ride services |
+| Source Systems | Trip Management System, Driver Management System, Payment Processing System, Zone Master Data and Ride Event Streaming System |
+| Ride Categories | Economy, Sedan and Premium |
 | Trip Status | Requested, Accepted, Picked Up, Completed and Cancelled |
 | Payment Methods | UPI, Credit Card, Debit Card, Wallet and Net Banking |
-| Reference Data | Fictional zones and driver information |
-| Streaming Events | Ride requested, driver accepted, trip started, trip completed and trip cancelled events |
+| Reference Data | Synthetic driver records and fictional zone reference data |
+| Streaming Events | Ride Requested, Driver Assigned, Trip Started, Trip Completed and Trip Cancelled |
 
 ---
 
@@ -30,12 +31,12 @@ This project uses synthetic educational data generated for learning, experimenta
 
 | File | Approximate Rows | Reason |
 |---|---:|---|
-| trips.parquet | ~250,000 | Stores trip requests and ride lifecycle information |
-| drivers.json | ~8,000 | Stores driver snapshots and service details |
-| zones.csv | ~150 | Stable reference data for fictional city zones |
-| payments.csv | ~230,000 | Stores payment attempts and transaction details |
-| ride_request_event_drop_01.json | Small sample | Initial streaming event simulation |
-| ride_request_event_drop_02.json | Small sample | Incremental streaming event simulation |
+| trips.parquet | ~250,000 | Stores trip booking details, ride lifecycle, distance, fare and trip status information |
+| drivers.json | ~8,000 | Stores driver profiles, vehicle category and availability details |
+| zones.csv | ~150 | Stores fictional city zone reference information |
+| payments.csv | ~230,000 | Stores payment transactions, payment methods and payment status |
+| ride_request_event_drop_01.json | Small sample | Simulates the first batch of ride request streaming events |
+| ride_request_event_drop_02.json | Small sample | Simulates incremental ride request streaming events |
 
 ---
 
@@ -46,18 +47,18 @@ This project uses synthetic educational data generated for learning, experimenta
 | Duplicate Trip IDs | A small percentage of duplicate trip identifiers may be intentionally introduced | COUNT(*) - COUNT(DISTINCT trip_id) |
 | Missing Driver IDs | Driver identifiers may be NULL before assignment or for cancelled trips | COUNT(driver_id IS NULL) |
 | Invalid Zone References | Some trips may contain invalid pickup or drop-off zone identifiers | Anti-join with zones.csv |
-| Timestamp Inconsistencies | Invalid ride progression timestamps may be introduced | pickup_ts < request_ts or dropoff_ts < pickup_ts |
-| Payment Failures | Failed payment attempts are intentionally simulated | COUNT(payment_status='failed') |
+| Timestamp Inconsistencies | Invalid ride progression timestamps may be introduced | pickup_ts < request_ts OR dropoff_ts < pickup_ts |
+| Payment Failures | Failed payment attempts are intentionally simulated | COUNT(payment_status = 'failed') |
 | Invalid Fare Values | Negative or inconsistent fare values may be introduced for validation purposes | final_fare_inr < 0 |
 
 ---
 
 ## 5. Manual Verification
 
-- Source file schemas were verified against the TripPulse data contract.
-- Required fields are present in the source, reference, payment and streaming datasets.
-- Trip identifiers follow the expected naming convention across the available datasets.
-- Nullable fields are logically consistent with trip status values. Unfulfilled and cancelled trips may legitimately contain NULL values for driver assignment, pickup, drop-off, actual distance and final fare attributes.
-- The dataset contains multiple ride service categories and trip status values that align with the TripPulse domain assumptions.
-- Surge multiplier values are greater than or equal to 1.0 in the examined records.
-- Sample datasets are maintained separately from the complete source datasets.
+- Source file schemas were verified against the TripPulse Urban Mobility Analytics data contract.
+- Required fields are present in the trip, driver, payment, zone and streaming event datasets.
+- Trip identifiers follow the expected naming convention across all available datasets.
+- Nullable fields are logically consistent with trip status values. Cancelled and unassigned trips may legitimately contain NULL values for driver assignment, pickup time, drop-off time,      travelled distance and final fare.
+- The dataset contains multiple ride categories and trip status values that align with the TripPulse domain assumptions.
+- Surge multiplier values are greater than or equal to 1.0 in the validated records.
+- Sample datasets are maintained separately from the complete source datasets for testing and analytical purposes.
