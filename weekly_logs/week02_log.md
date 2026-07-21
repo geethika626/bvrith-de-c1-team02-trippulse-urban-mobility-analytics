@@ -10,6 +10,7 @@
 ## 1. Sprint Goal
 
 The goal for Week 02 was to understand the provided TripPulse datasets, define the data contracts and assumptions, and prepare the required project documentation. We focused on verifying the schemas of all source files and documenting the metadata needed for downstream processing.
+
 ---
 
 ## 2. Work Completed
@@ -17,11 +18,10 @@ The goal for Week 02 was to understand the provided TripPulse datasets, define t
 | Task | Owner | Status | Evidence |
 |---|---|---|---|
 | Analyzed `trips.parquet` dataset schema | Team | Done | `data_dictionary.md` |
-| Verified `drivers.json` schema | Team | Done | Dataset file |
-| Verified `payments.csv` schema | Team | Done | Dataset file |
-| Verified `zones.csv` schema | Team | Done | Dataset file |
-| Reviewed streaming event JSON files | Team | Done | JSON event files |
-| Verified field names and sample records | Team | Done | Manual validation |
+| Verified source file schemas (`drivers.json`, `payments.csv`, and `zones.csv`) | Team | Done | `data_dictionary.md` |
+| Reviewed streaming event JSON file structures | Team | Done | `data_dictionary.md` |
+| Updated project assumptions | Team | Done | `synthetic_data_assumptions.md` |
+| Verified field names, data types, and sample records | Team | Done | Manual validation |
 
 ---
 
@@ -68,4 +68,4 @@ The goal for Week 02 was to understand the provided TripPulse datasets, define t
 - Implement data quality checks for source datasets.
 - Define transformations for the Silver layer.
 - Validate relationships between trips, drivers, payments, and zones datasets.
-- Prepare notebooks required for the next sprint.
+
