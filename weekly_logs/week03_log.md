@@ -1,5 +1,4 @@
-# Week 03 Log — [Sprint Name]
-
+# Week 03 Log — Data Exploration & Source Validation
 **Week:** 3
  
 **Date range:** 25th July 2026 - 30th July 2026
