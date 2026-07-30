@@ -1,8 +1,11 @@
 # Week 03 Log — [Sprint Name]
 
-**Week:** 3  
-**Date range:** 25th July 2026 - 30th July 2026  
-**Team:** Data Nexus / 02
+**Week:** 3
+ 
+**Date range:** 25th July 2026 - 30th July 2026
+ 
+**Team:** Data Nexus / Team02
+ 
 **Project:** TripPulse: Urban Mobility Analytics
 
 ---
