@@ -6,12 +6,12 @@
 
 ## 1. Source File Catalog
 
-| File Name | Grain | Purpose | Approx. Rows | Notes |
+| File Name | Grain | Purpose | Number of Rows | Notes |
 |---|---|---|---:|---|
-| trips.parquet | One row per trip request | Stores ride request and complete trip lifecycle information | ~250,000 | Batch source file |
-| drivers.json | One row per driver snapshot | Stores driver and vehicle information | ~8,000 | Reference/master data |
-| zones.csv | One row per fictional zone | Stores zone and demand information | ~150 | Reference data |
-| payments.csv | One row per payment attempt | Stores payment transaction details | ~230,000 | One trip can have multiple payment attempts |
+| trips.parquet | One row per trip request | Stores ride request and complete trip lifecycle information | 250875 | Batch source file |
+| drivers.json | One row per driver snapshot | Stores driver and vehicle information | 2800 | Reference/master data |
+| zones.csv | One row per fictional zone | Stores zone and demand information | 120 | Reference data |
+| payments.csv | One row per payment attempt | Stores payment transaction details | 180315 | One trip can have multiple payment attempts |
 | ride_request_event_drop_01.json | One row per event | Streaming ride request events | Small sample | JSON Lines file (Streaming simulation) |
 | ride_request_event_drop_02.json | One row per event | Incremental streaming ride events | Small sample | JSON Lines file (Streaming simulation) |
 
