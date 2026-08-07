@@ -1,4 +1,4 @@
-# Week 01 Log — [Sprint Name]
+# Week 01 Log — Project understanding and repository readiness
 
 - **Week:** 1
 - **Date range:** 14 July 2026 - 20 July 2026
