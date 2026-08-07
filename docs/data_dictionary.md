@@ -55,7 +55,6 @@
 | lifetime_completed_trips | integer | Yes | 2135 | Total completed trips |
 | last_status_update_ts | timestamp | Yes | 2026-01-28T15:05:00.000Z | Last driver status update timestamp |
 | source_record_version | integer | Yes | 1 | Source record version |
-| effective_from | timestamp | Yes | 2026-01-01 | Date from which the driver record is effective |
 
 ---
 
