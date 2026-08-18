@@ -1,10 +1,8 @@
 # Week 03 Log — Data Exploration & Source Validation
-**Week:** 3
- 
-**Date range:** 25th July 2026 - 30th July 2026
- 
-**Team:** Data Nexus / Team02
- 
+
+**Week:** 3  
+**Date range:** 25th July 2026 - 30th July 2026  
+**Team:** Data Nexus / Team02  
 **Project:** TripPulse: Urban Mobility Analytics
 
 ---
@@ -55,19 +53,18 @@ Profile all four Week-3 TripPulse sources (zones.csv, drivers.json, trips.parque
 ## 5. Evidence Added to GitHub
 
 - `notebooks/01_data_exploration.ipynb` — full Week-3 TripPulse exploration notebook
-- `screenshots/week03/README.md` — index describing each screenshot in this folder
-- `screenshots/week03/week03_01_source_files.png` — Volume file listing
-- `screenshots/week03/week03_02_dataframes.png` — DataFrame creation confirmation
-- `screenshots/week03/week03_03_sources_zones.png` — zones schema/source inspection
-- `screenshots/week03/week03_03_sources_drivers.png` — drivers schema/source inspection
-- `screenshots/week03/week03_03_sources_trips.png` — trips schema/source inspection
-- `screenshots/week03/week03_03_sources_payments.png` — payments schema/source inspection
-- `screenshots/week03/week03_04_grain_count_business_keys.png` — distinct business-key counts
-- `screenshots/week03/week03_04_grain_count_physical_rows.png` — physical row counts
-- `screenshots/week03/week03_05_relationship_checks.png` — FK relationship checks
-- `screenshots/week03/week03_06_overcount.png` — trip-to-payment overcount demo
-- `screenshots/week03/week03_07_bronze_demo.png` — Bronze demo table creation and preview
-- `screenshots/week03/week03_08_lineage.png` — Catalog Explorer lineage graph
+- `screenshots/week03_source_files.png` — Volume file listing
+- `screenshots/week03_dataframes.png` — DataFrame creation confirmation
+- `screenshots/week03_sources_zones.png` — zones schema/source inspection
+- `screenshots/week03_sources_drivers.png` — drivers schema/source inspection
+- `screenshots/week03_sources_trips.png` — trips schema/source inspection
+- `screenshots/week03_sources_payments.png` — payments schema/source inspection
+- `screenshots/week03_grain_count_business_keys.png` — distinct business-key counts
+- `screenshots/week03_grain_count_physical_rows.png` — physical row counts
+- `screenshots/week03_relationship_checks.png` — FK relationship checks
+- `screenshots/week03_overcount.png` — trip-to-payment overcount demo
+- `screenshots/week03_bronze_demo.png` — Bronze demo table creation and preview
+- `screenshots/week03_lineage.png` — Catalog Explorer lineage graph
 - This log (`weekly_logs/week03_log.md`)
 
 ---
@@ -85,5 +82,7 @@ Profile all four Week-3 TripPulse sources (zones.csv, drivers.json, trips.parque
 
 ## 7. Next Week Preparation
 
-- [Action]
-- [Action]
+- Start the complete Bronze-layer ingestion for all available TripPulse source files.
+- Apply data-quality and validation checks during Bronze ingestion.
+- Prepare the cleaned and validated data for the Silver-layer transformation.
+- Document the Bronze-to-Silver data flow and transformation requirements.
