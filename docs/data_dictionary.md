@@ -1,7 +1,8 @@
 # Data Dictionary
 
-**Week:** 2  
-**Purpose:** Define raw, reference, Silver, and streaming fields used in the TripPulse Urban Mobility Analytics project.
+Week: 2  
+Purpose: Define raw, reference, Silver, and streaming fields used in the TripPulse Urban Mobility Analytics project.
+
 ---
 
 ## 1. Source File Catalog
