@@ -19,14 +19,14 @@ Profile all four Week-3 TripPulse sources (zones.csv, drivers.json, trips.parque
 |---|---|---|---|
 | Convert PageLoop Week-3 template into `notebooks/01_data_exploration.ipynb` for TripPulse | Team | Done | `notebooks/01_data_exploration.ipynb` |
 | Load all four sources as PySpark DataFrames + Spark SQL views (`zones`, `drivers`, `trips`, `payments`) | Team | Done | `screenshots/week03_source_files.png`, `screenshots/week03_dataframes.png` |
-| Inspect schema for all four sources vs. `docs/data_dictionary.md` | Team | Done | `screenshots/week03_sources_zones.png`, `screenshots/week03/week03_03_sources_drivers.png`, `screenshots/week03/week03_03_sources_trips.png`, `screenshots/week03_sources_payments.png` |
+| Inspect schema for all four sources vs. `docs/data_dictionary.md` | Team | Done | `screenshots/week03_sources_zones.png`, `screenshots/week03/week03_sources_drivers.png`, `screenshots/week03/week03_sources_trips.png`, `screenshots/week03_sources_payments.png` |
 | Diagnose and fix `trips.parquet` nanosecond-timestamp read failure (`PARQUET_TYPE_ILLEGAL`) | Team | Done | Explicit-schema fix in notebook Section 3.3 |
 | Grain, physical-row-count, distinct-key, and value-distribution checks | Team | Done | `screenshots/week03_grain_count_physical_rows.png`, `screenshots/week03_grain_count_business_keys.png` |
 | Relationship checks (driver→zone, trip→driver, trip→pickup/dropoff zone, payment→trip) | Team | Done | `screenshots/week03_relationship_checks.png` |
 | Trip-to-payment overcount demonstration (joined rows vs. distinct trips) | Team | Done | `screenshots/week03_06_overcount.png` |
 | Business question: highest-activity pickup zone | Team | Done | Notebook Section 15 |
 | One Bronze demo table: `trippulse_week03_bronze_demo_trips` | Team | Done | `screenshots/week03_bronze_demo.png` |
-| One lineage demo view: `trippulse_week03_lineage_demo_view` + Catalog Explorer lineage graph | Team | Done | `screenshots/week03__lineage.png` |
+| One lineage demo view: `trippulse_week03_lineage_demo_view` + Catalog Explorer lineage graph | Team | Done | `screenshots/week03_lineage.png` |
 
 ---
 
