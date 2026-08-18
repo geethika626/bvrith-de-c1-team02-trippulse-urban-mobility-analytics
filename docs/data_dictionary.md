@@ -90,26 +90,61 @@
 
 ---
 
-## 5. Canonical Silver Table Design
+## 5. Silver Candidate Table Design
 
-| Silver Field | Type | Source Mapping | Business Meaning |
-|--------------|------|----------------|------------------|
-| trip_id | string | trips.trip_id | Unique trip identifier |
-| request_date | date | date(trips.request_ts) | Date used for analytics and reporting |
-| driver_id | string | trips.driver_id | Assigned driver's identifier |
-| pickup_zone_name | string | Join zones on pickup_zone_id | Pickup location of the trip |
-| dropoff_zone_name | string | Join zones on dropoff_zone_id | Destination location of the trip |
-| service_type | string | trips.service_type | Type of ride requested |
-| trip_status | string | upper(trips.trip_status) | Standardized trip status |
-| estimated_distance_km | double | trips.estimated_distance_km | Estimated travel distance |
-| actual_distance_km | double | trips.actual_distance_km | Actual completed travel distance |
-| estimated_fare_inr | double | trips.estimated_fare_inr | Estimated trip fare |
-| final_fare_inr | double | trips.final_fare_inr | Final fare charged to the customer |
-| payment_status | string | Join payments on trip_id | Status of payment transaction |
-| surge_multiplier | double | trips.surge_multiplier | Dynamic pricing factor |
-| driver_rating | double | Join drivers on driver_id | Driver's latest rating |
-| is_completed_trip | boolean | Derived from trip_status | Indicates whether the trip was successfully completed |
+The Silver Candidate layer converts Bronze records into typed and standardised Candidate records while preserving Bronze lineage. Candidate records remain untrusted until the Week-6 data-quality process is completed.
 
+### 5.1 silver_zones_candidate
+
+| Area | Week-5 Candidate Design |
+|---|---|
+| Grain | One row per zone record |
+| Types | Parse date and boolean fields |
+| Standardisation | Trim and standardise zone identifiers and controlled categories |
+| Lineage | Retain Bronze lineage fields |
+| Validation preparation | Prepare unique business-key tests |
+
+### 5.2 silver_drivers_candidate
+
+| Area | Week-5 Candidate Design |
+|---|---|
+| Grain | One row per driver snapshot |
+| Types | Parse date, timestamp, rating and integer fields |
+| Standardisation | Standardise vehicle, service and status fields |
+| Lineage | Retain Bronze lineage |
+| Validation preparation | Prepare zone-reference and compatibility checks |
+
+### 5.3 silver_trips_candidate
+
+| Area | Week-5 Candidate Design |
+|---|---|
+| Grain | One row per trip request |
+| Types | Parse lifecycle timestamps and decimal fields |
+| Standardisation | Standardise identifiers, trip status and service type |
+| Lineage | Retain Bronze lineage |
+| `response_seconds` | `driver_accept_ts - request_ts` when the accepted lifecycle is eligible; otherwise NULL |
+| `wait_seconds` | `pickup_ts - driver_accept_ts` when both timestamps are eligible |
+| `trip_duration_seconds` | `dropoff_ts - pickup_ts` for locally eligible completed trips |
+| `is_completed` | Derived from the approved final trip status |
+| `is_cancelled` | Derived from the approved final trip status |
+| `is_unfulfilled` | Derived from the approved final trip status |
+| `is_surge_trip` | TRUE when a valid `surge_multiplier` is greater than 1.00 |
+| `distance_variance_km` | `actual_distance_km - estimated_distance_km` when both values are eligible |
+| `fare_variance_inr` | `final_fare_inr - estimated_fare_inr` when lifecycle and fare fields are eligible |
+| Validation preparation | Prepare reference and lifecycle tests |
+
+### 5.4 silver_payments_candidate
+
+| Area | Week-5 Candidate Design |
+|---|---|
+| Grain | One row per payment attempt |
+| Types | Parse attempt number, timestamp, amount and final-attempt flag |
+| Standardisation | Standardise payment method, status and failure reason |
+| Lineage | Retain Bronze lineage |
+| Validation preparation | Prepare trip and grouped payment-attempt reconciliation |
+| Important rule | Payment attempts must not be collapsed into one trip row |
+
+---
 
 ## 6. Streaming Event Schema: ride_request_event_drop_01.json
 
