@@ -1,8 +1,8 @@
 # Week 04 Log — Bronze Table Construction
 
-**Week:** 4
-**Date range:** 31st July 2026 - 7th August 2026
-**Team:** Data Nexus / Team02
+**Week:** 4  
+**Date range:** 31st July 2026 - 7th August 2026  
+**Team:** Data Nexus / Team02  
 **Project:** TripPulse: Urban Mobility Analytics
 
 ---
@@ -63,7 +63,6 @@ Build the complete Bronze layer for the four approved TripPulse batch sources (`
 ## 5. Evidence Added to GitHub
 
 - `notebooks/02_bronze_ingestion.ipynb` — complete Week-4 TripPulse Source-to-Bronze ingestion notebook
-- `screenshots/week04/README.md` — index of Week-4 evidence screenshots
 - `screenshots/week04_Volume_source_files.png` — approved source files visible in the Unity Catalog Volume
 - `screenshots/week04_Sample_Bronze_table.png` — sample persistent Bronze Delta table output
 - `screenshots/week04_Consolidated_reconciliation_output.png` — consolidated source-to-Bronze row-count validation
