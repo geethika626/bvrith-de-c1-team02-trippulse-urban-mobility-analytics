@@ -1,10 +1,8 @@
 # Week 04 Log — Bronze Table Construction
+
 **Week:** 4
-
 **Date range:** 31st July 2026 - 7th August 2026
-
 **Team:** Data Nexus / Team02
-
 **Project:** TripPulse: Urban Mobility Analytics
 
 ---
@@ -20,16 +18,16 @@ Build the complete Bronze layer for the four approved TripPulse batch sources (`
 | Task | Owner | Status | Evidence |
 |---|---|---|---|
 | Create TripPulse Week-4 Bronze ingestion notebook `notebooks/02_bronze_ingestion.ipynb` | Team | Done | `notebooks/02_bronze_ingestion.ipynb` |
-| Verify all four approved batch files in Unity Catalog Volume `/Volumes/trippulse/default/trippulsedata` | Team | Done | `screenshots/week04/week04_Volume_source_files.jpeg` |
+| Verify all four approved batch files in Unity Catalog Volume `/Volumes/trippulse/default/trippulsedata` | Team | Done | `screenshots/week04_Volume_source_files.png` |
 | Read and inspect `zones.csv`, `drivers.json`, `trips.parquet`, and `payments.csv` using appropriate Spark readers | Team | Done | Week-4 notebook source sections |
 | Preserve source business values and add Bronze technical metadata | Team | Done | Week-4 notebook Bronze-ready sections |
 | Create Delta table `bronze_trippulse_zones` | Team | Done | Week-4 notebook |
-| Create Delta table `bronze_trippulse_drivers` | Team | Done | `screenshots/week04/week04_Sample_Bronze_table.jpeg` |
+| Create Delta table `bronze_trippulse_drivers` | Team | Done | `screenshots/week04_Sample_Bronze_table.png` |
 | Create Delta table `bronze_trippulse_trips` | Team | Done | Week-4 notebook |
 | Create Delta table `bronze_trippulse_payments` | Team | Done | Week-4 notebook |
-| Reconcile source and Bronze row counts for all four datasets | Team | Done | `screenshots/week04/week04_Consolidated_reconciliation_output.jpeg` |
-| Perform controlled repeat-run test and verify that the Bronze count does not increase unexpectedly | Team | Done | `screenshots/week04/week04_Repeat_run_proof.jpeg` |
-| Inspect Delta table history for the rerun-tested Bronze table | Team | Done | `screenshots/week04/week04_Delta_History.jpeg` |
+| Reconcile source and Bronze row counts for all four datasets | Team | Done | `screenshots/week04_Consolidated_reconciliation_output.png` |
+| Perform controlled repeat-run test and verify that the Bronze count does not increase unexpectedly | Team | Done | `screenshots_week04_Repeat_run_proof.png` |
+| Inspect Delta table history for the rerun-tested Bronze table | Team | Done | `screenshots/week04/week04_Delta_History.png` |
 
 ---
 
@@ -66,11 +64,11 @@ Build the complete Bronze layer for the four approved TripPulse batch sources (`
 
 - `notebooks/02_bronze_ingestion.ipynb` — complete Week-4 TripPulse Source-to-Bronze ingestion notebook
 - `screenshots/week04/README.md` — index of Week-4 evidence screenshots
-- `screenshots/week04/week04_Volume_source_files.jpeg` — approved source files visible in the Unity Catalog Volume
-- `screenshots/week04/week04_Sample_Bronze_table.jpeg` — sample persistent Bronze Delta table output
-- `screenshots/week04/week04_Consolidated_reconciliation_output.jpeg` — consolidated source-to-Bronze row-count validation
-- `screenshots/week04/week04_Repeat_run_proof.jpeg` — controlled rerun validation showing no unintended row-count increase
-- `screenshots/week04/week04_Delta_History.jpeg` — Delta history of the rerun-tested Bronze table
+- `screenshots/week04_Volume_source_files.png` — approved source files visible in the Unity Catalog Volume
+- `screenshots/week04_Sample_Bronze_table.png` — sample persistent Bronze Delta table output
+- `screenshots/week04_Consolidated_reconciliation_output.png` — consolidated source-to-Bronze row-count validation
+- `screenshots/week04_Repeat_run_proof.png` — controlled rerun validation showing no unintended row-count increase
+- `screenshots/week04_Delta_History.png` — Delta history of the rerun-tested Bronze table
 - This log (`weekly_logs/week04_log.md`)
 
 ---
