@@ -62,4 +62,4 @@ The goal of Week 1 is to understand the TripPulse project requirements, set up t
 
 ## 7. Next Week Preparation
 
-- [Action]
+- Getting ready with the GitHub Repository to perform further tasks.
