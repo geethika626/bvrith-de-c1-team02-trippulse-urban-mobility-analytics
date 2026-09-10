@@ -1,7 +1,7 @@
 # Week 07 Log — Gold Model, KPI Implementation and Reconciliation
 
 **Week:** 7  
-**Date range:** 04th September 2026 - 10th September 2026
+**Date range:** 04th September 2026 - 10th September 2026  
 **Team:** Data Nexus / 02  
 **Project:** TripPulse — Urban Mobility Analytics
 
