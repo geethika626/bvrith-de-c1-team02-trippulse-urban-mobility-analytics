@@ -17,11 +17,13 @@ Rules:
 
 ## Power BI File-Size Rule
 
-Preferred submission is the PBIX file plus screenshots.
+## PBIX Storage
 
-If the `.pbix` file becomes too large to manage cleanly in GitHub, keep the final screenshots and dashboard insight notes in this repo, and add a short note here explaining where the PBIX is stored for mentor review.
+The final Power BI dashboard file is larger than 25 MB and is therefore not uploaded to GitHub.
 
-Do not keep uploading multiple heavy PBIX versions into GitHub.
+The current final PBIX contains the completed PBI-01 Ride Operations Overview and is stored separately for mentor review.
+
+The repository contains the supporting screenshots, Gold export evidence, dashboard documentation and validation results.
 
 ## PBI-01 Measure Reconciliation
 
