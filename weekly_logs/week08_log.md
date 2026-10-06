@@ -1,7 +1,7 @@
 # Week 08 Log — Gold Hand-off and Power BI Foundation
 
 **Week:** 8  
-**Date range:** 28 August 2026 – 03 September 2026  
+**Date range:** 11th September 2026 - 18th September 2026  
 **Team:** Data Nexus / Team02  
 **Project:** TripPulse: Urban Mobility Analytics
 
