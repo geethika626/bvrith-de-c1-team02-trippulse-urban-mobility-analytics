@@ -208,48 +208,18 @@ A single trip can have multiple payment attempts.
 
 The TripPulse streaming data consists of ride lifecycle events stored in JSON event-drop files.
 
-### Streaming Source Files
+### 6.1 Streaming Source Files
 
 | File | Description |
 |---|---|
 | `ride_request_event_drop_01.json` | Streaming ride lifecycle event drop |
 | `ride_request_event_drop_02.json` | Streaming ride lifecycle event drop |
 
-### 6.1 Ride Request Event Schema
+### 6.2 Ride Request Event Schema
 
 | Field | Data Type | Description |
 |---|---|---|
-| `event_id` | STRING | ## 6. Streaming Event Schema
-
-The TripPulse streaming data consists of ride lifecycle events stored in JSON event-drop files.
-
-### Streaming Source Files
-
-| File | Description |
-|---|---|
-| `ride_request_event_drop_01.json` | Streaming ride lifecycle event drop |
-| `ride_request_event_drop_02.json` | Streaming ride lifecycle event drop |
-
-### 6.1 Ride Request Event Schema
-
-| Field | Data Type | Description |
-|---|---|---|
-| `event_id` | STRING | ## 6. Streaming Event Schema
-
-The TripPulse streaming data consists of ride lifecycle events stored in JSON event-drop files.
-
-### Streaming Source Files
-
-| File | Description |
-|---|---|
-| `ride_request_event_drop_01.json` | Streaming ride lifecycle event drop |
-| `ride_request_event_drop_02.json` | Streaming ride lifecycle event drop |
-
-### 6.1 Ride Request Event Schema
-
-| Field | Data Type | Description |
-|---|---|---|
-| `event_id` | STRING | Unique identifier for the streaming event |
+| `event_id` | STRING | Identifier for the streaming event |
 | `schema_version` | STRING | Version of the streaming event schema |
 | `event_ts` | TIMESTAMP | Event timestamp |
 | `event_type` | STRING | Type of ride lifecycle event |
@@ -266,75 +236,7 @@ The TripPulse streaming data consists of ride lifecycle events stored in JSON ev
 | `event_sequence_no` | INTEGER | Sequence number of the event within the trip lifecycle |
 | `unexpected_field` | STRING / NULL | Field used in the supplied data for schema-drift testing |
 
-### 6.2 Example Event Lifecycle
-
-The streaming data contains different ride lifecycle events.
-
-A completed ride can follow this sequence:
-
-```text
-ride_requested
-        ↓
-driver_assigned
-        ↓
-driver_accepted
-        ↓
-pickup_started
-        ↓
-ride_completed
-        ↓
-payment_confirmed |
-| `schema_version` | STRING | Version of the streaming event schema |
-| `event_ts` | TIMESTAMP | Event timestamp |
-| `event_type` | STRING | Type of ride lifecycle event |
-| `trip_id` | STRING | Identifier of the associated trip |
-| `driver_id` | STRING | Identifier of the associated driver; may be null for unfulfilled rides |
-| `pickup_zone_id` | STRING | Pickup zone identifier |
-| `dropoff_zone_id` | STRING | Drop-off zone identifier |
-| `service_type` | STRING | Type of ride service |
-| `status_from` | STRING | Previous status before the event; null for an initial `ride_requested` event |
-| `status_to` | STRING | New status after the event |
-| `surge_multiplier` | DECIMAL | Surge multiplier associated with the ride |
-| `estimated_fare_inr` | DECIMAL | Estimated fare in INR |
-| `producer_run_id` | STRING | Identifier of the producer/data-generation run |
-| `event_sequence_no` | INTEGER | Sequence number of the event within the trip lifecycle |
-| `unexpected_field` | STRING / NULL | Field used in the supplied data for schema-drift testing |
-
-### 6.2 Example Event Lifecycle
-
-The streaming data contains different ride lifecycle events.
-
-A completed ride can follow this sequence:
-
-```text
-ride_requested
-        ↓
-driver_assigned
-        ↓
-driver_accepted
-        ↓
-pickup_started
-        ↓
-ride_completed
-        ↓
-payment_confirmed |
-| `schema_version` | STRING | Version of the streaming event schema |
-| `event_ts` | TIMESTAMP | Event timestamp |
-| `event_type` | STRING | Type of ride lifecycle event |
-| `trip_id` | STRING | Identifier of the associated trip |
-| `driver_id` | STRING | Identifier of the associated driver; may be null for unfulfilled rides |
-| `pickup_zone_id` | STRING | Pickup zone identifier |
-| `dropoff_zone_id` | STRING | Drop-off zone identifier |
-| `service_type` | STRING | Type of ride service |
-| `status_from` | STRING | Previous status before the event; null for an initial `ride_requested` event |
-| `status_to` | STRING | New status after the event |
-| `surge_multiplier` | DECIMAL | Surge multiplier associated with the ride |
-| `estimated_fare_inr` | DECIMAL | Estimated fare in INR |
-| `producer_run_id` | STRING | Identifier of the producer/data-generation run |
-| `event_sequence_no` | INTEGER | Sequence number of the event within the trip lifecycle |
-| `unexpected_field` | STRING / NULL | Field used in the supplied data for schema-drift testing |
-
-### 6.2 Example Event Lifecycle
+### 6.3 Example Event Lifecycle
 
 The streaming data contains different ride lifecycle events.
 
@@ -352,50 +254,55 @@ pickup_started
 ride_completed
         ↓
 payment_confirmed
+```
 
-### Grain
+### 6.4 Streaming Data Quality Considerations
 
-**One row per incremental ride lifecycle transition.**
+The streaming event data includes cases that are useful for validation and data-quality testing, including:
 
-Both event drops follow the same event contract.
+- Duplicate `event_id` values
+- Event sequence anomalies
+- Schema-version changes
+- An `unexpected_field` used for schema-drift testing
+- Events where `driver_id` is null for unfulfilled rides
 
-| Field | Data Type | Required? | Key / Role | Business Meaning | Example |
-|---|---|---|---|---|---|
-| `event_id` | string | Yes | PK | Unique event identifier | `EVT-20260401-000001` |
-| `schema_version` | string | Yes | Technical attribute | Event contract version | `1.0` |
-| `event_ts` | timestamp | Yes | Event-time attribute | Time event occurred | `2026-03-31T18:43:10Z` |
-| `event_type` | string | Yes | Attribute | Lifecycle event type | `ride_requested` |
-| `trip_id` | string | Yes | FK | Associated trip | `TRP-20260331-000355` |
-| `driver_id` | string | Yes | Reference | Associated driver | `DRV-000815` |
-| `pickup_zone_id` | string | Yes | Reference | Pickup zone | `ZON-023` |
-| `dropoff_zone_id` | string | Yes | Reference | Drop-off zone | `ZON-119` |
-| `service_type` | string | Yes | Attribute | Ride service category | `mini` |
-| `status_from` | string | Optional | Lifecycle attribute | Previous lifecycle state | `requested` |
-| `status_to` | string | Yes | Lifecycle attribute | New lifecycle state | `assigned` |
-| `surge_multiplier` | decimal(4,2) | Yes | Measure | Demand multiplier | `1.50` |
-| `estimated_fare_inr` | decimal(10,2) | Yes | Measure | Estimated fare | `664.74` |
-| `producer_run_id` | string | Yes | Technical attribute | Event producer/run identifier | `P02-TRIPPULSE-SEED4202-V1` |
-| `event_sequence_no` | integer | Yes | Sequence attribute | Event sequence within trip | `2` |
+These cases should be handled through the applicable streaming data-quality checks.
 
-## Streaming Rules
+### 6.5 Streaming Event Grain
 
-- `event_id` must be unique.
-- `schema_version` must match the approved event contract.
-- `event_ts` is the event-time field.
-- `trip_id` identifies the associated ride request.
-- `event_sequence_no` preserves lifecycle ordering within a trip.
-- `status_from → status_to` represents the lifecycle transition.
-- Event records must not be counted as independent trip requests.
-- Event drops must support idempotent processing.
+**One row represents one ride lifecycle event.**
+
+The streaming events are associated with trips, drivers and zones through their respective identifiers.
+
+### 6.6 Streaming Event Relationships
+
+| Field | Related Entity | Relationship |
+|---|---|---|
+| `trip_id` | Trips | Links the streaming event to a trip |
+| `driver_id` | Drivers | Links the event to a driver when available |
+| `pickup_zone_id` | Zones | Identifies the pickup zone |
+| `dropoff_zone_id` | Zones | Identifies the drop-off zone |
+
+### 6.7 Streaming Validation Rules
+
+The streaming events should be validated for:
+
+- Event identity and duplicate detection
+- Event-time validity
+- Event sequence and transition order
+- Schema and payload validity
+- Valid trip, driver and zone references
 
 ---
 
-# 8. Key Relationships
+# 7. Key Relationships
+
+The main relationships between the TripPulse entities are:
 
 ```text
                     ┌──────────────┐
                     │    ZONES     │
-                    │   zone_id PK │
+                    │   zone_id    │
                     └──────┬───────┘
                            │
               ┌────────────┴─────────────┐
@@ -403,23 +310,51 @@ Both event drops follow the same event contract.
               ▼                          ▼
       ┌──────────────┐           ┌──────────────┐
       │   DRIVERS    │           │    TRIPS     │
-      │ driver_id PK │──────────►│  trip_id PK  │
-      │ home_zone FK │           │ driver_id FK │
-      └──────────────┘           │ pickup_zone  │
-                                 │ dropoff_zone │
+      │  driver_id   │──────────►│   trip_id    │
+      │ home_zone_id │           │  driver_id   │
+      └──────────────┘           │pickup_zone_id│
+                                 │dropoff_zone_id│
                                  └──────┬───────┘
                                         │
                                         ▼
                                 ┌────────────────┐
                                 │    PAYMENTS    │
-                                │ payment_id PK  │
-                                │ trip_id FK     │
+                                │   payment_id   │
+                                │     trip_id    │
                                 │ attempt_number │
                                 └────────────────┘
 
                          ┌──────────────────────┐
                          │ RIDE REQUEST EVENTS  │
-                         │ event_id PK          │
-                         │ trip_id              │
-                         │ driver_id            │
+                         │      event_id        │
+                         │       trip_id        │
+                         │      driver_id       │
+                         │   pickup_zone_id     │
+                         │   dropoff_zone_id    │
                          └──────────────────────┘
+```
+
+### 7.1 Relationship Summary
+
+| Relationship | Description |
+|---|---|
+| `drivers.home_zone_id → zones.zone_id` | Associates a driver with their home zone |
+| `trips.driver_id → drivers.driver_id` | Associates a trip with a driver |
+| `trips.pickup_zone_id → zones.zone_id` | Identifies the pickup zone |
+| `trips.dropoff_zone_id → zones.zone_id` | Identifies the drop-off zone |
+| `payments.trip_id → trips.trip_id` | Associates payment attempts with a trip |
+| `ride_events.trip_id → trips.trip_id` | Associates streaming events with a trip |
+| `ride_events.driver_id → drivers.driver_id` | Associates streaming events with a driver when available |
+| `ride_events.pickup_zone_id → zones.zone_id` | Associates an event with its pickup zone |
+| `ride_events.dropoff_zone_id → zones.zone_id` | Associates an event with its drop-off zone |
+
+### 7.2 Important Grain Consideration
+
+A trip can have multiple payment attempts and multiple streaming lifecycle events.
+
+Therefore:
+
+- Payment rows must not be directly counted as trips.
+- Streaming event rows must not be directly counted as trip requests.
+- Trip-level analysis should use the appropriate trip-level key and aggregation logic.
+
