@@ -3,7 +3,7 @@
 **Week:** 5  
 **Date range:** 7th August 2026 - 13th August 2026  
 **Team:** Data Nexus / Team02  
-**Project:** TripPulse: Urban Mobility Analytics
+**Project:** TripPulse — Urban Mobility Analytics
 
 ---
 
