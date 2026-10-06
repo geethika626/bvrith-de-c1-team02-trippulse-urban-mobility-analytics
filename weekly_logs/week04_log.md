@@ -1,7 +1,7 @@
 # Week 04 Log — Bronze Table Construction
 
 **Week:** 4  
-**Date range:** 31st July 2026 - 7th August 2026  
+**Date range:** 31st July 2026 – 7th August 2026  
 **Team:** Data Nexus / Team02  
 **Project:** TripPulse: Urban Mobility Analytics
 
@@ -9,7 +9,7 @@
 
 ## 1. Sprint Goal
 
-Build the complete Bronze layer for the four approved TripPulse batch sources (`zones.csv`, `drivers.json`, `trips.parquet`, `payments.csv`) in Databricks by reading and validating each source, preserving source business values, adding technical ingestion metadata, persisting each dataset as a Delta table, reconciling source and Bronze row counts, and proving controlled rerun behaviour — without starting Silver, Gold, Power BI, or streaming work.
+The goal of Week 4 was to build the persistent Bronze layer for the four approved TripPulse batch source datasets: `zones.csv`, `drivers.json`, `trips.parquet`, and `payments.csv`. The work focused on preserving source business values, adding ingestion and lineage metadata, creating persistent Delta Bronze tables, reconciling source and Bronze record counts, validating record preservation, and checking controlled rerun behaviour. Silver transformations, Gold aggregation, Power BI, and streaming processing were kept outside the Week 4 scope.
 
 ---
 
@@ -17,58 +17,68 @@ Build the complete Bronze layer for the four approved TripPulse batch sources (`
 
 | Task | Owner | Status | Evidence |
 |---|---|---|---|
-| Create TripPulse Week-4 Bronze ingestion notebook `notebooks/02_bronze_ingestion.ipynb` | Team | Done | `notebooks/02_bronze_ingestion.ipynb` |
-| Verify all four approved batch files in Unity Catalog Volume `/Volumes/trippulse/default/trippulsedata` | Team | Done | `screenshots/week04_Volume_source_files.png` |
-| Read and inspect `zones.csv`, `drivers.json`, `trips.parquet`, and `payments.csv` using appropriate Spark readers | Team | Done | Week-4 notebook source sections |
-| Preserve source business values and add Bronze technical metadata | Team | Done | Week-4 notebook Bronze-ready sections |
-| Create Delta table `bronze_trippulse_zones` | Team | Done | Week-4 notebook |
-| Create Delta table `bronze_trippulse_drivers` | Team | Done | `screenshots/week04_Sample_Bronze_table.png` |
-| Create Delta table `bronze_trippulse_trips` | Team | Done | Week-4 notebook |
-| Create Delta table `bronze_trippulse_payments` | Team | Done | Week-4 notebook |
-| Reconcile source and Bronze row counts for all four datasets | Team | Done | `screenshots/week04_Consolidated_reconciliation_output.png` |
-| Perform controlled repeat-run test and verify that the Bronze count does not increase unexpectedly | Team | Done | `screenshots_week04_Repeat_run_proof.png` |
-| Inspect Delta table history for the rerun-tested Bronze table | Team | Done | `screenshots/week04/week04_Delta_History.png` |
+| Created the Week 4 Bronze ingestion notebook `notebooks/02_bronze_ingestion.ipynb` | Team | Done | `notebooks/02_bronze_ingestion.ipynb` |
+| Verified the four approved TripPulse batch source files in the Databricks Volume | Team | Done | `screenshots/week04_01_bronze_tables.png` |
+| Loaded `zones.csv`, `drivers.json`, `trips.parquet`, and `payments.csv` using appropriate Spark readers | Team | Done | `notebooks/02_bronze_ingestion.ipynb` |
+| Created persistent Bronze Delta tables for Zones, Drivers, Trips, and Payments | Team | Done | `screenshots/week04_01_bronze_tables.png` |
+| Added technical ingestion and lineage metadata to Bronze records | Team | Done | `screenshots/week04_04_bronze_schema_metadata.png` |
+| Reconciled source row counts with Bronze row counts for all four datasets | Team | Done | `screenshots/week04_02_source_bronze_counts.png` |
+| Compared a deterministic source record with its corresponding Bronze record to verify source-value preservation | Team | Done | `screenshots/week04_03_record_comparison.png` |
+| Validated Bronze lineage metadata completeness | Team | Done | `screenshots/week04_05_event_retention.png` |
+| Performed a controlled rerun and checked that Bronze record counts did not increase unexpectedly | Team | Done | `screenshots/week04_06_idempotent_rerun.png` |
+| Completed the final Bronze validation checks | Team | Done | `screenshots/week04_07_final_validation.png` |
 
 ---
 
 ## 3. Key Decisions
 
-- Used the existing TripPulse Unity Catalog Volume `/Volumes/trippulse/default/trippulsedata` as the source location for all Week-4 batch ingestion.
-- Processed only the four approved batch sources: `zones.csv`, `drivers.json`, `trips.parquet`, and `payments.csv`.
-- Kept the ride-request event/drop JSON files outside the Week-4 Bronze batch workflow because streaming processing is reserved for a later project stage.
-- Preserved source business values in Bronze without applying Silver-layer cleaning, standardization, deduplication, or business rules.
-- Added technical metadata to Bronze records for lineage and auditability:
-  - `_source_file_name`
-  - `_source_file_path`
-  - `_ingested_at`
-  - `_ingestion_run_id`
-  - `_schema_version`
-  - `_record_hash`
-- Used Delta tables as the persistent Bronze storage layer instead of relying on temporary Spark views.
-- Used `CREATE OR REPLACE TABLE ... USING DELTA` for the controlled Bronze writes so that rerunning the demonstrated load does not unintentionally append duplicate rows.
-- Retained the project-specific explicit schema handling for `trips.parquet` required because of its Parquet nanosecond timestamp fields.
+- Used the existing TripPulse Unity Catalog Volume `/Volumes/trippulse/default/trippulsedata` as the source location for Week 4 batch ingestion.
+- Processed the four approved batch sources: `zones.csv`, `drivers.json`, `trips.parquet`, and `payments.csv`.
+- Kept streaming event processing outside the Week 4 implementation because the project workflow schedules streaming work for a later stage.
+- Preserved source business values in Bronze without applying Silver-level cleaning, standardization, deduplication, or business transformations.
+- Persisted the four Bronze datasets as Delta tables:
+  - `bronze_zones_raw`
+  - `bronze_drivers_raw`
+  - `bronze_trips_raw`
+  - `bronze_payments_raw`
+- Added technical metadata for traceability and auditability, including source file, ingestion timestamp, source-row context, run identifier, record hash, and schema-version information where applicable.
+- Used source-to-Bronze reconciliation to verify that the controlled batch inputs were loaded without unexpected row-count loss.
+- Used a deterministic source-record comparison to verify that Bronze preserved source business values.
+- Used a controlled rerun to verify that the Bronze load did not unintentionally increase the business-record count.
+- Retained the explicit-schema handling for `trips.parquet` because of its Parquet nanosecond timestamp fields identified during Week 3.
 
 ---
 
 ## 4. Blockers / Risks
 
-| Blocker | Impact | Help Needed |
+| Blocker / Risk | Impact | Resolution / Handling |
 |---|---|---|
-| `trips.parquet` contains timestamp fields stored as Parquet `INT64 TIMESTAMP(NANOS)` | Default Spark schema inference cannot be used reliably for the trips source | Resolved using the explicit-schema approach established during Week 3 |
-| Temporary views such as `drivers_bronze_ready` are session-scoped and are not persistent Bronze tables | Could cause confusion between Bronze-ready temporary data and the actual Bronze layer | Resolved by persisting each Bronze-ready dataset as a Delta table |
-| `CREATE OR REPLACE TABLE` cell displays `No rows returned` after successful execution | Could be mistaken for an empty Bronze table | Resolved by validating the created table separately with `SELECT` and row-count queries |
+| `trips.parquet` contains Parquet `INT64 TIMESTAMP(NANOS)` fields | Default Spark schema inference could not reliably read the Trips source | Reused the explicit-schema approach established during Week 3 |
+| Temporary Bronze-ready DataFrames/views are session-scoped | Temporary objects alone would not provide a persistent Bronze layer | Persisted the processed datasets as Delta Bronze tables |
+| Successful table-creation commands do not directly display table rows | Could make a successful write appear as if no data was loaded | Validated the created Bronze tables separately using table-existence and row-count queries |
+| Controlled reruns must not unintentionally create duplicate business records | An incorrect rerun could increase Bronze counts | Performed a before/after rerun validation and checked the resulting counts |
 
 ---
 
 ## 5. Evidence Added to GitHub
 
-- `notebooks/02_bronze_ingestion.ipynb` — complete Week-4 TripPulse Source-to-Bronze ingestion notebook
-- `screenshots/week04_Volume_source_files.png` — approved source files visible in the Unity Catalog Volume
-- `screenshots/week04_Sample_Bronze_table.png` — sample persistent Bronze Delta table output
-- `screenshots/week04_Consolidated_reconciliation_output.png` — consolidated source-to-Bronze row-count validation
-- `screenshots/week04_Repeat_run_proof.png` — controlled rerun validation showing no unintended row-count increase
-- `screenshots/week04_Delta_History.png` — Delta history of the rerun-tested Bronze table
-- This log (`weekly_logs/week04_log.md`)
+### Notebook
+
+- `notebooks/02_bronze_ingestion.ipynb`
+
+### Screenshots
+
+- `screenshots/week04_01_bronze_tables.png` — persistent Bronze Delta tables
+- `screenshots/week04_02_source_bronze_counts.png` — source-to-Bronze count reconciliation
+- `screenshots/week04_03_record_comparison.png` — source and Bronze record comparison
+- `screenshots/week04_04_bronze_schema_metadata.png` — Bronze schema and technical metadata
+- `screenshots/week04_05_event_retention.png` — Week 4 validation output retained as supporting Bronze evidence
+- `screenshots/week04_06_idempotent_rerun.png` — controlled rerun validation
+- `screenshots/week04_07_final_validation.png` — final Bronze validation
+
+### Weekly Log
+
+- `weekly_logs/week04_log.md`
 
 ---
 
@@ -76,16 +86,17 @@ Build the complete Bronze layer for the four approved TripPulse batch sources (`
 
 | Question | Response |
 |---|---|
-| Where AI helped | Converting the Week-4 PageLoop Bronze-ingestion pattern into a TripPulse-specific notebook using the project's four approved batch sources, actual Unity Catalog Volume path, Bronze table names, metadata fields, reconciliation checks, repeat-run validation, and Delta-history checks. AI also helped explain Databricks execution behaviour while validating the Bronze tables. |
-| What we changed after AI suggestion | Updated the initial Volume path to the actual project path `/Volumes/trippulse/default/trippulsedata`; retained the TripPulse-specific `trips.parquet` explicit-schema handling from Week 3 rather than using a generic Parquet reader. |
-| What we verified manually | Ran the Week-4 notebook cells in Databricks; confirmed the source files were available in the Volume; inspected Bronze table records; verified source and Bronze counts through reconciliation; checked controlled repeat-run behaviour; and inspected Delta history. |
-| What we can explain without AI | The purpose of the Bronze layer, the difference between a DataFrame/temp view and a persistent Delta table, why Bronze preserves source business values, why ingestion metadata is required, how source-to-Bronze reconciliation validates ingestion completeness, and why controlled reruns must not create unintended duplicate records. |
+| Where AI helped | AI was used to explain Bronze-layer ingestion patterns, Spark/Databricks behaviour, Delta tables, technical metadata, source-to-Bronze reconciliation, record comparison, and controlled rerun validation. |
+| What we changed after AI suggestion | The ingestion logic was adapted to the actual TripPulse source paths, four approved batch datasets, project-specific Bronze table names, metadata fields, and the explicit-schema handling required for `trips.parquet`. |
+| What we verified manually | The Week 4 notebook was executed in Databricks; source availability was checked; the four Bronze tables were inspected; source and Bronze counts were reconciled; source and Bronze records were compared; metadata completeness was checked; and controlled rerun behaviour was validated. |
+| What we can explain without AI | We can explain the purpose of the Bronze layer, why source business values are preserved, why technical metadata is added, how source-to-Bronze reconciliation works, why persistent Delta tables are used, and why controlled reruns must not unintentionally create duplicate records. |
 
 ---
 
 ## 7. Next Week Preparation
 
-- Begin Silver-layer design using the validated Bronze Delta tables as inputs.
-- Identify cleaning, standardization, type-correction, and deduplication requirements for each TripPulse dataset.
-- Define data-quality checks for important business keys and relationships before creating Silver tables.
-- Review Week-5 instructions and confirm the required Silver table names, transformations, and evidence before implementation.
+- Use the validated Bronze Delta tables as the inputs for Week 5 Silver Candidate transformations.
+- Identify required type conversions, standardization, derived fields, and grain-preservation requirements for each dataset.
+- Define the Silver Candidate transformations without mixing them with Trusted Silver data-quality decisions.
+- Validate Candidate counts, grain, lineage, and derived fields against the Bronze layer.
+- Prepare the Week 5 evidence and documentation before implementing the Silver transformations.
