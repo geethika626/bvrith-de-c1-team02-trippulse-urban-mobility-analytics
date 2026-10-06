@@ -1,174 +1,282 @@
 # Data Dictionary
 
 Week: 2  
-Purpose: Define raw, reference, Silver, and streaming fields used in the TripPulse Urban Mobility Analytics project.
+**Purpose:** Define the approved raw, reference, Silver Candidate, and streaming fields used in the TripPulse Urban Mobility Analytics project.
+
+> **Important:** The source datasets are fictional/synthetic. No real passenger, driver, payment-account, licence, phone, or other real-person identity information is represented.
 
 ---
 
-## 1. Source File Catalog
+# 1. Source File Catalog
 
-| File Name | Grain | Purpose | Number of Rows | Notes |
-|---|---|---|---:|---|
-| trips.parquet | One row per trip request | Stores ride request and complete trip lifecycle information | 250875 | Batch source file |
-| drivers.json | One row per driver snapshot | Stores driver and vehicle information | 2800 | Reference/master data |
-| zones.csv | One row per fictional zone | Stores zone and demand information | 120 | Reference data |
-| payments.csv | One row per payment attempt | Stores payment transaction details | 180315 | One trip can have multiple payment attempts |
-| ride_request_event_drop_01.json | One row per event | Streaming ride request events | Small sample | JSON Lines file (Streaming simulation) |
-| ride_request_event_drop_02.json | One row per event | Incremental streaming ride events | Small sample | JSON Lines file (Streaming simulation) |
-
----
-
-## 2. Raw File Schema: trips.parquet
-
-| Field Name | Data Type | Required? | Example | Description |
+| File Name | Format | Grain | Primary Key | Purpose |
 |---|---|---|---|---|
-| trip_id | string | Yes | TRIP-000001 | Unique trip identifier |
-| request_ts | timestamp | Yes | 2026-07-15 09:15:00 | Ride request timestamp |
-| driver_accept_ts | timestamp | No | 2026-07-15 09:17:20 | Driver accepted timestamp |
-| pickup_ts | timestamp | No | 2026-07-15 09:20:15 | Pickup timestamp |
-| dropoff_ts | timestamp | No | 2026-07-15 09:45:10 | Drop-off timestamp |
-| cancel_ts | timestamp | No | 2026-07-15 09:18:00 | Cancellation timestamp |
-| record_created_ts | timestamp | Yes | 2026-07-15 09:15:01 | Record creation timestamp |
-| driver_id | string | Conditional | DRV-000001 | Assigned driver ID |
-| pickup_zone_id | string | Yes | ZON-001 | Pickup zone |
-| dropoff_zone_id | string | Yes | ZON-015 | Drop-off zone |
-| service_type | string | Yes | Sedan | Ride service category |
-| trip_status | string | Yes | COMPLETED | Current trip status |
-| cancellation_reason | string | No | Customer Cancelled | Reason for trip cancellation |
-| estimated_distance_km | double | Yes | 12.5 | Estimated trip distance |
-| actual_distance_km | double | No | 12.9 | Actual distance travelled |
-| estimated_fare_inr | double | Yes | 250.00 | Estimated trip fare |
-| final_fare_inr | double | No | 265.50 | Final fare charged |
-| surge_multiplier | double | Yes | 1.5 | Dynamic pricing multiplier |
----
-
-## 3. Raw File Schema: drivers.json
-
-| Field Name | Data Type | Required? | Example | Description |
-|---|---|---|---|---|
-| driver_id | string | Yes | DRV-000001 | Unique driver identifier |
-| home_zone_id | string | Yes | ZON-999 | Driver's assigned home zone |
-| onboard_date | timestamp | Yes | 2024-03-15T00:00:00.000 | Driver onboarding date |
-| vehicle_type | string | Yes | Sedan | Vehicle category |
-| service_type | string | Yes | Sedan | Type of service offered |
-| driver_status | string | Yes | Active | Current driver status |
-| rating | double | Yes | 3.96 | Driver rating score |
-| lifetime_completed_trips | integer | Yes | 2135 | Total completed trips |
-| last_status_update_ts | timestamp | Yes | 2026-01-28T15:05:00.000Z | Last driver status update timestamp |
-| source_record_version | integer | Yes | 1 | Source record version |
+| `zones.csv` | CSV | One row per fictional zone | `zone_id` | Zone reference/master data |
+| `drivers.json` | JSON | One row per fictional driver snapshot | `driver_id` | Driver reference/master data |
+| `trips.parquet` | Parquet | One row per trip request at final batch-known state | `trip_id` | Central ride-request and trip lifecycle data |
+| `payments.csv` | CSV | One row per payment attempt | `payment_id` | Payment transaction attempts |
+| `ride_request_event_drop_01.json` | JSON Lines | One row per incremental lifecycle event | `event_id` | Streaming event drop 01 |
+| `ride_request_event_drop_02.json` | JSON Lines | One row per incremental lifecycle event | `event_id` | Streaming event drop 02 |
 
 ---
 
+# 2. Source Grain and Relationship Contract
 
+| Source | Grain | Primary Key | Foreign Keys |
+|---|---|---|---|
+| `zones.csv` | One row per fictional zone | `zone_id` | None |
+| `drivers.json` | One row per fictional driver snapshot | `driver_id` | `home_zone_id → zones.zone_id` |
+| `trips.parquet` | One row per ride request at final batch-known state | `trip_id` | `driver_id → drivers.driver_id`; `pickup_zone_id → zones.zone_id`; `dropoff_zone_id → zones.zone_id` |
+| `payments.csv` | One row per payment attempt | `payment_id` | `trip_id → trips.trip_id` |
+| Event drops | One row per incremental lifecycle transition | `event_id` | `trip_id`, `driver_id`, zone references |
 
-## 4. Raw File Schema: payments.csv
+## Relationship Rules
 
-| Field Name | Data Type | Required? | Example | Description |
-|---|---|---|---|---|
-| payment_id | string | Yes | PAY-00000001 | Unique payment identifier |
-| trip_id | string | Yes | TRP-2026XXXX | Associated trip identifier |
-| attempt_number | integer | Yes | 1 | Payment attempt number |
-| payment_ts | timestamp | Yes | 2026-01-01 18:25:00 | Payment transaction timestamp |
-| payment_method | string | Yes | UPI | Payment method used |
-| payment_status | string | Yes | Success | Status of payment transaction |
-| amount_inr | double | Yes | 184.95 | Transaction amount |
-| failure_reason | string | No | Timeout | Failure reason (if any) |
-| is_final_attempt | boolean | Yes | TRUE | Indicates final payment attempt |
-| payment_reference | string | Yes | TPREF-00000001 | Unique payment reference number |
-
-
-## 4. Reference File Schema: zones.csv
-
-| Field Name | Data Type | Required? | Example | Description |
-|---|---|---|---|---|
-| zone_id | string | Yes | ZON-001 | Unique zone identifier |
-| zone_name | string | Yes | TPC Zone | Name of the fictional city zone |
-| zone_type | string | Yes | Residential | Zone classification |
-| city_code | string | Yes | TPC | Fictional city code |
-| demand_band | string | Yes | Low | Demand category |
-| is_active | boolean | Yes | TRUE | Indicates whether the zone is active |
-| effective_from | timestamp | Yes | 2026-01-01 | Date from which the zone definition is effective |
+- One zone can have many drivers.
+- One zone can be the pickup zone for many trips.
+- One zone can be the drop-off zone for many trips.
+- One driver can be associated with many trips.
+- A trip may have zero to three payment attempts.
+- Every payment attempt must resolve to a valid trip.
+- A driver reference is optional for trips before driver assignment.
+- **Trip is the central analytical request grain.**
+- `PaymentAttempt` and `RideRequestEvent` must not be counted as trip requests.
 
 ---
 
-## 5. Silver Candidate Table Design
+# 3. Raw File Schema — `zones.csv`
 
-The Silver Candidate layer converts Bronze records into typed and standardised Candidate records while preserving Bronze lineage. Candidate records remain untrusted until the Week-6 data-quality process is completed.
+## Grain
 
-### 5.1 silver_zones_candidate
+**One row per fictional operating zone.**
 
-| Area | Week-5 Candidate Design |
+| Field | Data Type | Required? | Key / Role | Business Meaning | Example |
+|---|---|---|---|---|---|
+| `zone_id` | string | Yes | PK | Fictional operating-zone identifier | `ZON-001` |
+| `zone_name` | string | Yes | Attribute | Human-readable fictional zone label | `Madhapur Central` |
+| `zone_type` | string | Yes | Attribute | Operating context of the zone | `commercial` |
+| `city_code` | string | Yes | Business key part | Code for the fictional TripPulse city | `TPC` |
+| `demand_band` | string | Yes | Attribute | Planning band used to shape synthetic request frequency | `high` |
+| `is_active` | boolean | Yes | Attribute | Whether the zone can receive new generated activity | `true` |
+| `effective_from` | date | Yes | Attribute | Date from which the zone definition applies | `2026-01-01` |
+
+## DQ Expectations
+
+| Field | Validation |
 |---|---|
-| Grain | One row per zone record |
-| Types | Parse date and boolean fields |
-| Standardisation | Trim and standardise zone identifiers and controlled categories |
-| Lineage | Retain Bronze lineage fields |
-| Validation preparation | Prepare unique business-key tests |
-
-### 5.2 silver_drivers_candidate
-
-| Area | Week-5 Candidate Design |
-|---|---|
-| Grain | One row per driver snapshot |
-| Types | Parse date, timestamp, rating and integer fields |
-| Standardisation | Standardise vehicle, service and status fields |
-| Lineage | Retain Bronze lineage |
-| Validation preparation | Prepare zone-reference and compatibility checks |
-
-### 5.3 silver_trips_candidate
-
-| Area | Week-5 Candidate Design |
-|---|---|
-| Grain | One row per trip request |
-| Types | Parse lifecycle timestamps and decimal fields |
-| Standardisation | Standardise identifiers, trip status and service type |
-| Lineage | Retain Bronze lineage |
-| `response_seconds` | `driver_accept_ts - request_ts` when the accepted lifecycle is eligible; otherwise NULL |
-| `wait_seconds` | `pickup_ts - driver_accept_ts` when both timestamps are eligible |
-| `trip_duration_seconds` | `dropoff_ts - pickup_ts` for locally eligible completed trips |
-| `is_completed` | Derived from the approved final trip status |
-| `is_cancelled` | Derived from the approved final trip status |
-| `is_unfulfilled` | Derived from the approved final trip status |
-| `is_surge_trip` | TRUE when a valid `surge_multiplier` is greater than 1.00 |
-| `distance_variance_km` | `actual_distance_km - estimated_distance_km` when both values are eligible |
-| `fare_variance_inr` | `final_fare_inr - estimated_fare_inr` when lifecycle and fare fields are eligible |
-| Validation preparation | Prepare reference and lifecycle tests |
-
-### 5.4 silver_payments_candidate
-
-| Area | Week-5 Candidate Design |
-|---|---|
-| Grain | One row per payment attempt |
-| Types | Parse attempt number, timestamp, amount and final-attempt flag |
-| Standardisation | Standardise payment method, status and failure reason |
-| Lineage | Retain Bronze lineage |
-| Validation preparation | Prepare trip and grouped payment-attempt reconciliation |
-| Important rule | Payment attempts must not be collapsed into one trip row |
+| `zone_id` | Pattern `ZON-[0-9]{3}`, unique |
+| `zone_name` | 1–80 characters; unique within `city_code` |
+| `zone_type` | `residential`, `commercial`, `transit_hub`, `education`, `mixed_use`, `airport` |
+| `city_code` | `TPC` in the pilot baseline |
+| `demand_band` | `low`, `medium`, `high` |
+| `is_active` | Boolean |
+| `effective_from` | Within approved source date range |
 
 ---
 
-## 6. Streaming Event Schema: ride_request_event_drop_01.json
+# 4. Raw File Schema — `drivers.json`
 
-| Field Name | Data Type | Required? | Example | Description |
-|------------|-----------|-----------|---------|-------------|
-| event_id | string | Yes | EVT-20260401-000001 | Unique event identifier |
-| schema_version | string | Yes | 1.0 | Version of the streaming event schema |
-| event_ts | timestamp | Yes | 2026-03-31T18:31:10.000Z | Event timestamp |
-| event_type | string | Yes | ride_requested | Type of ride lifecycle event |
-| trip_id | string | Yes | TRP-20260331-000132 | Associated trip identifier |
-| driver_id | string | Yes | DRV-001461 | Assigned driver identifier |
+## Grain
+
+**One row per fictional driver snapshot.**
+
+No driver name, phone number, licence number, or real identity attribute is included.
+
+| Field | Data Type | Required? | Key / Role | Business Meaning | Example |
+|---|---|---|---|---|---|
+| `driver_id` | string | Yes | PK | Fictional driver identifier | `DRV-000001` |
+| `home_zone_id` | string | Yes | FK | Primary fictional operating zone | `ZON-024` |
+| `onboard_date` | date | Yes | Attribute | Synthetic driver onboarding date | `2025-06-15` |
+| `vehicle_type` | string | Yes | Attribute | Vehicle category | `bike` |
+| `service_type` | string | Yes | Attribute | Primary service capability | `bike_taxi` |
+| `driver_status` | string | Yes | Attribute | Driver operating status | `active` |
+| `rating` | decimal(3,2) | Optional | Measure | Synthetic driver quality score | `4.62` |
+| `lifetime_completed_trips` | integer | Yes | Measure | Synthetic completed-trip count | `1824` |
+| `last_status_update_ts` | timestamp | Yes | Attribute | Latest driver status update timestamp | `2026-03-30T18:45:00+05:30` |
+| `source_record_version` | integer | Yes | Technical attribute | Source snapshot version | `1` |
+
+## DQ Expectations
+
+| Field | Validation |
+|---|---|
+| `driver_id` | Unique; valid driver identifier |
+| `home_zone_id` | Must resolve to `zones.zone_id` |
+| `onboard_date` | Valid date |
+| `vehicle_type` | Controlled vehicle category |
+| `service_type` | Must be compatible with vehicle type |
+| `driver_status` | Controlled status |
+| `rating` | Valid range; optional |
+| `lifetime_completed_trips` | Non-negative integer |
+| `last_status_update_ts` | Valid timestamp |
+| `source_record_version` | Positive/integer version |
 
 ---
 
-## 7. Streaming Event Schema: ride_request_event_drop_02.json
+# 5. Raw File Schema — `trips.parquet`
 
-| Field Name | Data Type | Required? | Example | Description |
-|------------|-----------|-----------|---------|-------------|
-| event_id | string | Yes | EVT-20260401-000051 | Unique event identifier |
-| schema_version | string | Yes | 1.0 | Version of the streaming event schema |
-| event_ts | timestamp | Yes | 2026-03-31T18:55:30.000Z | Event timestamp |
-| event_type | string | Yes | driver_accepted | Type of ride lifecycle event |
-| trip_id | string | Yes | TRP-20260331-000506 | Associated trip identifier |
-| driver_id | string | Yes | DRV-002003 | Assigned driver identifier |
+## Grain
+
+**One row per ride request at its final batch-known state.**
+
+This is the **central analytical request grain**.
+
+| Field | Data Type | Required? | Key / Role | Business Meaning | Example |
+|---|---|---|---|---|---|
+| `trip_id` | string | Yes | PK | Unique trip request identifier | `TRP-20260214-000321` |
+| `request_ts` | timestamp | Yes | Attribute | Time the ride was requested | `2026-02-14 08:17:22` |
+| `driver_accept_ts` | timestamp | Optional | Attribute | Time driver accepted the request | `2026-02-14 08:19:00` |
+| `pickup_ts` | timestamp | Optional | Attribute | Time passenger was picked up | `2026-02-14 08:22:00` |
+| `dropoff_ts` | timestamp | Optional | Attribute | Time trip was completed | `2026-02-14 08:45:00` |
+| `cancel_ts` | timestamp | Optional | Attribute | Time request was cancelled | `2026-02-14 08:20:00` |
+| `driver_id` | string | Optional | FK | Assigned driver | `DRV-000847` |
+| `pickup_zone_id` | string | Yes | FK | Pickup zone | `ZON-024` |
+| `dropoff_zone_id` | string | Yes | FK | Drop-off zone | `ZON-078` |
+| `service_type` | string | Yes | Attribute | Ride service category | `auto` |
+| `trip_status` | string | Yes | Attribute | Final trip lifecycle status | `completed` |
+| `cancellation_reason` | string | Optional | Attribute | Reason for cancellation | `rider_changed_plan` |
+| `estimated_distance_km` | decimal(7,2) | Yes | Measure | Estimated route distance | `12.40` |
+| `actual_distance_km` | decimal(7,2) | Optional | Measure | Actual travelled distance | `13.10` |
+| `estimated_fare_inr` | decimal(10,2) | Yes | Measure | Estimated fare | `284.50` |
+| `final_fare_inr` | decimal(10,2) | Optional | Measure | Final charged fare | `301.00` |
+| `surge_multiplier` | decimal(4,2) | Yes | Measure | Demand multiplier at request time | `1.30` |
+| `record_created_ts` | timestamp | Yes | Technical attribute | Generator batch-record creation timestamp | `2026-04-01T01:00:00+05:30` |
+
+## Trip Lifecycle Rules
+
+| Field | DQ Expectation |
+|---|---|
+| `trip_id` | Unique; approved `TRP-YYYYMMDD-NNNNNN` pattern |
+| `request_ts` | Within approved source date window |
+| `driver_accept_ts` | Null for unfulfilled/certain cancellations; otherwise >= `request_ts` |
+| `pickup_ts` | Required for completed trips; >= `driver_accept_ts` |
+| `dropoff_ts` | Required only for completed trips; > `pickup_ts` |
+| `cancel_ts` | Required for cancelled trips; >= `request_ts`; null for completed |
+| `driver_id` | Optional, but must resolve when present |
+| `pickup_zone_id` | Must resolve to an active zone |
+| `dropoff_zone_id` | Must resolve to an active zone |
+| `service_type` | `bike_taxi`, `auto`, `mini`, `sedan` |
+| `trip_status` | `completed`, `cancelled_by_rider`, `cancelled_by_driver`, `unfulfilled` |
+| `cancellation_reason` | Controlled reason; null for completed |
+| `estimated_distance_km` | `0.3–80.0 km` |
+| `actual_distance_km` | `0.3–100.0 km` for completed trips |
+| `estimated_fare_inr` | `₹20–₹5,000` |
+| `final_fare_inr` | `₹20–₹6,000` for completed trips |
+| `surge_multiplier` | `1.00–3.00` |
+| `record_created_ts` | At/after source lifecycle timestamps |
 
 ---
+
+# 6. Raw File Schema — `payments.csv`
+
+## Grain
+
+**One row per payment attempt.**
+
+A single trip can have multiple payment attempts.
+
+| Field | Data Type | Required? | Key / Role | Business Meaning | Example |
+|---|---|---|---|---|---|
+| `payment_id` | string | Yes | PK | Deterministic payment-attempt identifier | `PAY-000000321` |
+| `trip_id` | string | Yes | FK | Trip linked to the payment attempt | `TRP-20260214-000321` |
+| `attempt_number` | integer | Yes | Business key part | Sequential payment attempt number | `1` |
+| `payment_ts` | timestamp | Yes | Attribute | Time payment attempt occurred | `2026-02-14T08:52:05+05:30` |
+| `payment_method` | string | Yes | Attribute | Synthetic payment channel | `upi` |
+| `payment_status` | string | Yes | Attribute | Payment outcome | `success` |
+| `amount_inr` | decimal(10,2) | Yes | Measure | Payment attempt amount | `301.00` |
+| `failure_reason` | string | Optional | Attribute | Reason for failed payment | `bank_declined` |
+| `is_final_attempt` | boolean | Yes | Attribute | Indicates final known payment attempt | `true` |
+| `payment_reference` | string | Yes | Attribute | Opaque synthetic payment reference | `TPREF-9B7D12A1` |
+
+## Payment DQ Expectations
+
+| Field | Validation |
+|---|---|
+| `payment_id` | Unique; pattern `PAY-[0-9]{9}` |
+| `trip_id` | Must resolve to `trips.trip_id` |
+| `attempt_number` | 1–3; unique with `trip_id` |
+| `payment_ts` | Must be logically after trip request |
+| `payment_method` | `upi`, `card`, `wallet`, `cash` |
+| `payment_status` | `success`, `failed`, `pending`, `refunded` |
+| `amount_inr` | `₹0–₹6,000` |
+| `failure_reason` | Controlled reason; required for failed attempts |
+| `is_final_attempt` | Exactly one final attempt per trip with attempts |
+| `payment_reference` | Pattern `TPREF-[A-F0-9]{8}`; unique |
+
+---
+
+# 7. Streaming Event Schema
+
+## `ride_request_event_drop_01.json`
+
+## `ride_request_event_drop_02.json`
+
+### Grain
+
+**One row per incremental ride lifecycle transition.**
+
+Both event drops follow the same event contract.
+
+| Field | Data Type | Required? | Key / Role | Business Meaning | Example |
+|---|---|---|---|---|---|
+| `event_id` | string | Yes | PK | Unique event identifier | `EVT-20260401-000001` |
+| `schema_version` | string | Yes | Technical attribute | Event contract version | `1.0` |
+| `event_ts` | timestamp | Yes | Event-time attribute | Time event occurred | `2026-03-31T18:43:10Z` |
+| `event_type` | string | Yes | Attribute | Lifecycle event type | `ride_requested` |
+| `trip_id` | string | Yes | FK | Associated trip | `TRP-20260331-000355` |
+| `driver_id` | string | Yes | Reference | Associated driver | `DRV-000815` |
+| `pickup_zone_id` | string | Yes | Reference | Pickup zone | `ZON-023` |
+| `dropoff_zone_id` | string | Yes | Reference | Drop-off zone | `ZON-119` |
+| `service_type` | string | Yes | Attribute | Ride service category | `mini` |
+| `status_from` | string | Optional | Lifecycle attribute | Previous lifecycle state | `requested` |
+| `status_to` | string | Yes | Lifecycle attribute | New lifecycle state | `assigned` |
+| `surge_multiplier` | decimal(4,2) | Yes | Measure | Demand multiplier | `1.50` |
+| `estimated_fare_inr` | decimal(10,2) | Yes | Measure | Estimated fare | `664.74` |
+| `producer_run_id` | string | Yes | Technical attribute | Event producer/run identifier | `P02-TRIPPULSE-SEED4202-V1` |
+| `event_sequence_no` | integer | Yes | Sequence attribute | Event sequence within trip | `2` |
+
+## Streaming Rules
+
+- `event_id` must be unique.
+- `schema_version` must match the approved event contract.
+- `event_ts` is the event-time field.
+- `trip_id` identifies the associated ride request.
+- `event_sequence_no` preserves lifecycle ordering within a trip.
+- `status_from → status_to` represents the lifecycle transition.
+- Event records must not be counted as independent trip requests.
+- Event drops must support idempotent processing.
+
+---
+
+# 8. Key Relationships
+
+```text
+                    ┌──────────────┐
+                    │    ZONES     │
+                    │   zone_id PK │
+                    └──────┬───────┘
+                           │
+              ┌────────────┴─────────────┐
+              │                          │
+              ▼                          ▼
+      ┌──────────────┐           ┌──────────────┐
+      │   DRIVERS    │           │    TRIPS     │
+      │ driver_id PK │──────────►│  trip_id PK  │
+      │ home_zone FK │           │ driver_id FK │
+      └──────────────┘           │ pickup_zone  │
+                                 │ dropoff_zone │
+                                 └──────┬───────┘
+                                        │
+                                        ▼
+                                ┌────────────────┐
+                                │    PAYMENTS    │
+                                │ payment_id PK  │
+                                │ trip_id FK     │
+                                │ attempt_number │
+                                └────────────────┘
+
+                         ┌──────────────────────┐
+                         │ RIDE REQUEST EVENTS  │
+                         │ event_id PK          │
+                         │ trip_id              │
+                         │ driver_id            │
+                         └──────────────────────┘
