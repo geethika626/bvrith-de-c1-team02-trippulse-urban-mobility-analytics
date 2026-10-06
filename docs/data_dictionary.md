@@ -204,11 +204,154 @@ A single trip can have multiple payment attempts.
 
 ---
 
-# 7. Streaming Event Schema
+## 6. Streaming Event Schema
 
-## `ride_request_event_drop_01.json`
+The TripPulse streaming data consists of ride lifecycle events stored in JSON event-drop files.
 
-## `ride_request_event_drop_02.json`
+### Streaming Source Files
+
+| File | Description |
+|---|---|
+| `ride_request_event_drop_01.json` | Streaming ride lifecycle event drop |
+| `ride_request_event_drop_02.json` | Streaming ride lifecycle event drop |
+
+### 6.1 Ride Request Event Schema
+
+| Field | Data Type | Description |
+|---|---|---|
+| `event_id` | STRING | ## 6. Streaming Event Schema
+
+The TripPulse streaming data consists of ride lifecycle events stored in JSON event-drop files.
+
+### Streaming Source Files
+
+| File | Description |
+|---|---|
+| `ride_request_event_drop_01.json` | Streaming ride lifecycle event drop |
+| `ride_request_event_drop_02.json` | Streaming ride lifecycle event drop |
+
+### 6.1 Ride Request Event Schema
+
+| Field | Data Type | Description |
+|---|---|---|
+| `event_id` | STRING | ## 6. Streaming Event Schema
+
+The TripPulse streaming data consists of ride lifecycle events stored in JSON event-drop files.
+
+### Streaming Source Files
+
+| File | Description |
+|---|---|
+| `ride_request_event_drop_01.json` | Streaming ride lifecycle event drop |
+| `ride_request_event_drop_02.json` | Streaming ride lifecycle event drop |
+
+### 6.1 Ride Request Event Schema
+
+| Field | Data Type | Description |
+|---|---|---|
+| `event_id` | STRING | Unique identifier for the streaming event |
+| `schema_version` | STRING | Version of the streaming event schema |
+| `event_ts` | TIMESTAMP | Event timestamp |
+| `event_type` | STRING | Type of ride lifecycle event |
+| `trip_id` | STRING | Identifier of the associated trip |
+| `driver_id` | STRING | Identifier of the associated driver; may be null for unfulfilled rides |
+| `pickup_zone_id` | STRING | Pickup zone identifier |
+| `dropoff_zone_id` | STRING | Drop-off zone identifier |
+| `service_type` | STRING | Type of ride service |
+| `status_from` | STRING | Previous status before the event; null for an initial `ride_requested` event |
+| `status_to` | STRING | New status after the event |
+| `surge_multiplier` | DECIMAL | Surge multiplier associated with the ride |
+| `estimated_fare_inr` | DECIMAL | Estimated fare in INR |
+| `producer_run_id` | STRING | Identifier of the producer/data-generation run |
+| `event_sequence_no` | INTEGER | Sequence number of the event within the trip lifecycle |
+| `unexpected_field` | STRING / NULL | Field used in the supplied data for schema-drift testing |
+
+### 6.2 Example Event Lifecycle
+
+The streaming data contains different ride lifecycle events.
+
+A completed ride can follow this sequence:
+
+```text
+ride_requested
+        ↓
+driver_assigned
+        ↓
+driver_accepted
+        ↓
+pickup_started
+        ↓
+ride_completed
+        ↓
+payment_confirmed |
+| `schema_version` | STRING | Version of the streaming event schema |
+| `event_ts` | TIMESTAMP | Event timestamp |
+| `event_type` | STRING | Type of ride lifecycle event |
+| `trip_id` | STRING | Identifier of the associated trip |
+| `driver_id` | STRING | Identifier of the associated driver; may be null for unfulfilled rides |
+| `pickup_zone_id` | STRING | Pickup zone identifier |
+| `dropoff_zone_id` | STRING | Drop-off zone identifier |
+| `service_type` | STRING | Type of ride service |
+| `status_from` | STRING | Previous status before the event; null for an initial `ride_requested` event |
+| `status_to` | STRING | New status after the event |
+| `surge_multiplier` | DECIMAL | Surge multiplier associated with the ride |
+| `estimated_fare_inr` | DECIMAL | Estimated fare in INR |
+| `producer_run_id` | STRING | Identifier of the producer/data-generation run |
+| `event_sequence_no` | INTEGER | Sequence number of the event within the trip lifecycle |
+| `unexpected_field` | STRING / NULL | Field used in the supplied data for schema-drift testing |
+
+### 6.2 Example Event Lifecycle
+
+The streaming data contains different ride lifecycle events.
+
+A completed ride can follow this sequence:
+
+```text
+ride_requested
+        ↓
+driver_assigned
+        ↓
+driver_accepted
+        ↓
+pickup_started
+        ↓
+ride_completed
+        ↓
+payment_confirmed |
+| `schema_version` | STRING | Version of the streaming event schema |
+| `event_ts` | TIMESTAMP | Event timestamp |
+| `event_type` | STRING | Type of ride lifecycle event |
+| `trip_id` | STRING | Identifier of the associated trip |
+| `driver_id` | STRING | Identifier of the associated driver; may be null for unfulfilled rides |
+| `pickup_zone_id` | STRING | Pickup zone identifier |
+| `dropoff_zone_id` | STRING | Drop-off zone identifier |
+| `service_type` | STRING | Type of ride service |
+| `status_from` | STRING | Previous status before the event; null for an initial `ride_requested` event |
+| `status_to` | STRING | New status after the event |
+| `surge_multiplier` | DECIMAL | Surge multiplier associated with the ride |
+| `estimated_fare_inr` | DECIMAL | Estimated fare in INR |
+| `producer_run_id` | STRING | Identifier of the producer/data-generation run |
+| `event_sequence_no` | INTEGER | Sequence number of the event within the trip lifecycle |
+| `unexpected_field` | STRING / NULL | Field used in the supplied data for schema-drift testing |
+
+### 6.2 Example Event Lifecycle
+
+The streaming data contains different ride lifecycle events.
+
+A completed ride can follow this sequence:
+
+```text
+ride_requested
+        ↓
+driver_assigned
+        ↓
+driver_accepted
+        ↓
+pickup_started
+        ↓
+ride_completed
+        ↓
+payment_confirmed
 
 ### Grain
 
