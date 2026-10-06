@@ -1,26 +1,93 @@
-# Power BI Dashboard
+# TripPulse Power BI Dashboard
 
-The final Power BI dashboard was completed for Week 09.
+## Week 09 — Dashboard Refinement, Interactions and Insights
 
-The final PBIX contains the three approved dashboard pages:
+This folder contains the final TripPulse Power BI dashboard for Week 09.
 
-- PBI-01 • Ride Operations Overview
-- PBI-02 • Zone Demand and Surge
-- PBI-03 • Driver and Payment Reliability
+The final dashboard contains the three approved Power BI pages:
 
-The dashboard uses validated Gold outputs only and was reconciled against
-the governed Gold tables for the validation period 01-Jan-2026 to
-14-Jan-2026.
+- **PBI-01 • Ride Operations Overview**
+- **PBI-02 • Zone Demand and Surge**
+- **PBI-03 • Driver and Payment Reliability**
 
-## Power BI File-Size Rule
+The dashboard uses validated Gold outputs and was reconciled against the
+governed Gold tables for the validation period:
 
-The final PBIX file is larger than 25 MB and is therefore not committed
-to GitHub.
+**01-Jan-2026 to 14-Jan-2026**
 
-The final PBIX is stored separately for mentor review.
+## Dashboard File
 
-The repository contains the supporting dashboard screenshots, Gold export
-evidence, dashboard documentation and validation results.
+The final Power BI dashboard is included in this folder:
+
+`dashboard/TripPulse_Dashboard_Final.pbix`
+
+The repository also contains the supporting dashboard documentation,
+screenshots, Gold validation evidence and reconciliation results.
+
+---
+
+# Power BI Source Rule
+
+Power BI reporting uses validated Gold outputs only.
+
+The dashboard does not directly use:
+
+- Raw source files
+- Bronze tables
+- Silver Candidate tables
+- Quarantine tables
+
+The approved Gold tables and dimensions are used as the sources for the
+Week 09 dashboard.
+
+---
+
+# Gold Sources
+
+The Power BI model uses the following approved TripPulse Gold outputs:
+
+| Gold Table | Purpose / Grain |
+|---|---|
+| `agg_trip_operations_daily` | Daily trip-operation summary |
+| `agg_zone_demand_daily` | Daily zone-demand summary |
+| `agg_surge_impact_daily` | Daily surge-impact summary |
+| `agg_driver_performance_daily` | Daily driver-performance summary |
+| `agg_payment_reliability_daily` | Daily payment-reliability summary |
+| `dim_date` | Date dimension |
+| `dim_driver` | Driver dimension |
+| `dim_zone` | Zone dimension |
+
+The Gold tables provide the governed metrics used by the dashboard KPI
+cards and analytical visuals.
+
+---
+
+# Model and Relationships
+
+The Power BI model uses the approved Gold summary tables together with the
+required dimensions.
+
+The model was reviewed in Power BI Model view to verify the relationships
+between dimensions, fact-level data and Gold summary outputs.
+
+The model preserves the intended grain of the Gold datasets and avoids
+unsafe fact-to-fact relationships.
+
+The main dimensions used by the dashboard are:
+
+- `dim_date`
+- `dim_driver`
+- `dim_zone`
+
+The main fact and summary outputs include:
+
+- `fact_trip`
+- `fact_payment_attempt`
+- `agg_trip_operations_daily`
+- `agg_zone_demand_daily`
+- `agg_surge_impact_daily`
+- `agg_driver_performance_daily`
+- `agg_payment_reliability_daily`
 
 ---
 
@@ -28,12 +95,12 @@ evidence, dashboard documentation and validation results.
 
 ## PBI-01 • Ride Operations Overview
 
-Purpose:
+### Purpose
 
-Provides an overview of ride demand, completion, cancellation,
-unfulfilled requests and driver response performance.
+Provides an overview of ride demand, completion, cancellation, unfulfilled
+requests and driver response performance.
 
-Key dashboard components:
+### Key Dashboard Components
 
 - Total Trip Requests
 - Completion Rate
@@ -45,7 +112,7 @@ Key dashboard components:
 - Top 10 Pickup Zones by Trip Requests
 - Key Insight
 
-Filters:
+### Filters
 
 - Date
 - Service Type
@@ -72,17 +139,16 @@ The dashboard was returned to the default filter state after testing.
 
 ---
 
-# PBI-01 Measure Reconciliation
+# PBI-01 Gold Reconciliation
 
-PBI-01 was reconciled against the governed Gold table:
+PBI-01 was reconciled against:
 
 `workspace.default.agg_trip_operations_daily`
 
 ## Validation Period
 
-- Start date: 2026-01-01
-- End date: 2026-01-14
-- Gold source: `agg_trip_operations_daily`
+- Start date: `2026-01-01`
+- End date: `2026-01-14`
 
 ## Reconciliation Results
 
@@ -92,23 +158,7 @@ PBI-01 was reconciled against the governed Gold table:
 | Completion Rate | 64.12% | 64.12% | PASS |
 | Cancellation Rate | 23.82% | 24% | PASS |
 
-## Validation
-
-The following Gold calculations were used:
-
-- Total Trip Requests = `SUM(trip_requests)`
-- Completion Rate = `SUM(completed_trips) / SUM(trip_requests)`
-- Cancellation Rate = `SUM(cancelled_trips) / SUM(trip_requests)`
-
-The Power BI values reconcile with the same filtered Gold slice for
-01-Jan-2026 to 14-Jan-2026.
-
-Cancellation Rate is displayed as 24% in Power BI because the Gold
-value of 23.82% is rounded for display.
-
-## Evidence
-
-Databricks Gold validation confirmed:
+### Gold Validation
 
 - Total Trip Requests = 37,892
 - Completed Trips = 24,297
@@ -116,16 +166,26 @@ Databricks Gold validation confirmed:
 - Cancelled Trips = 9,027
 - Cancellation Rate = 23.8230%
 
+The Power BI values reconcile with the same filtered Gold slice.
+Cancellation Rate is displayed as 24% in Power BI because the Gold value
+of 23.82% is rounded for display.
+
+### Gold Calculations
+
+- Total Trip Requests = `SUM(trip_requests)`
+- Completion Rate = `SUM(completed_trips) / SUM(trip_requests)`
+- Cancellation Rate = `SUM(cancelled_trips) / SUM(trip_requests)`
+
 ---
 
 # PBI-02 • Zone Demand and Surge
 
-Purpose:
+### Purpose
 
 Provides zone-level demand analysis, surge exposure and fulfilment
 performance across pickup zones.
 
-Key dashboard components:
+### Key Dashboard Components
 
 - Total Trip Requests
 - Completion Rate
@@ -138,7 +198,7 @@ Key dashboard components:
 - Service-Type Response-Time Comparison
 - Key Insight
 
-Filters:
+### Filters
 
 - Date
 - Zone ID
@@ -167,9 +227,9 @@ The dashboard was returned to the default filter state after testing.
 
 ---
 
-# PBI-02 Validation
+# PBI-02 Gold Reconciliation
 
-PBI-02 was reconciled using the approved Gold tables:
+PBI-02 was reconciled using:
 
 - `workspace.default.agg_zone_demand_daily`
 - `workspace.default.agg_surge_impact_daily`
@@ -178,8 +238,8 @@ PBI-02 was reconciled using the approved Gold tables:
 
 ## Validation Period
 
-- Start date: 2026-01-01
-- End date: 2026-01-14
+- Start date: `2026-01-01`
+- End date: `2026-01-14`
 
 ## Reconciliation Results
 
@@ -191,9 +251,7 @@ PBI-02 was reconciled using the approved Gold tables:
 | Surge Trip Share | 55.2808% | 55.28% | PASS |
 | Average Final Fare | ₹446.6148 | ₹446.61 | PASS |
 
-## Validation
-
-The following Gold calculations were used:
+### Gold Calculations
 
 - Total Trip Requests = `SUM(trip_requests)`
 - Completion Rate = `SUM(completed_trips) / SUM(trip_requests)`
@@ -210,12 +268,12 @@ calculations for 01-Jan-2026 to 14-Jan-2026.
 
 # PBI-03 • Driver and Payment Reliability
 
-Purpose:
+### Purpose
 
 Provides driver-performance and payment-attempt analysis to identify
 operational reliability areas.
 
-Key dashboard components:
+### Key Dashboard Components
 
 - Driver Reliability Rate
 - Average Driver Response Minutes
@@ -228,7 +286,7 @@ Key dashboard components:
 - Payment Status and Retry Distribution
 - Key Insight
 
-Filters:
+### Filters
 
 - Date
 - Driver ID
@@ -260,9 +318,9 @@ Payment success is measured at the payment-attempt level.
 
 ---
 
-# PBI-03 Validation
+# PBI-03 Gold Reconciliation
 
-PBI-03 was reconciled using the approved Gold tables:
+PBI-03 was reconciled using:
 
 - `workspace.default.agg_driver_performance_daily`
 - `workspace.default.agg_payment_reliability_daily`
@@ -271,8 +329,8 @@ PBI-03 was reconciled using the approved Gold tables:
 
 ## Validation Period
 
-- Start date: 2026-01-01
-- End date: 2026-01-14
+- Start date: `2026-01-01`
+- End date: `2026-01-14`
 
 ## Driver Slice Reconciliation
 
@@ -316,8 +374,9 @@ The Gold result and Power BI value agree after rounding.
 
 # Cross-Page Consistency
 
-For the common date range 01-Jan-2026 to 14-Jan-2026, PBI-01 and PBI-02
-use the same governed trip request, completion and cancellation measures.
+For the common validation period of 01-Jan-2026 to 14-Jan-2026, PBI-01
+and PBI-02 use the same governed trip-request, completion and cancellation
+measures.
 
 Observed values:
 
@@ -333,7 +392,7 @@ KPIs.
 
 # Dashboard Reporting Rule
 
-Power BI reporting uses validated Gold outputs only.
+The final dashboard reports only from validated Gold outputs.
 
 The dashboard does not use:
 
@@ -342,8 +401,7 @@ The dashboard does not use:
 - Silver Candidate tables
 - Quarantine tables
 
-The approved Gold tables and dimensions are used for the Week 09
-dashboard pages.
+This ensures that dashboard KPIs are based on governed downstream data.
 
 ---
 
@@ -358,7 +416,7 @@ The three dashboard pages follow a consistent presentation structure:
 5. Analytical visuals
 6. Key insight
 
-The dashboards were redesigned for consistent formatting, readability and
+The dashboards were refined for consistent formatting, readability and
 presentation quality while keeping the validated Gold measures unchanged.
 
 ---
@@ -391,6 +449,7 @@ Supporting dashboard evidence is maintained in the repository.
 
 These include:
 
+- Final Power BI dashboard
 - Dashboard screenshots
 - Gold export evidence
 - KPI reconciliation evidence
@@ -398,11 +457,17 @@ These include:
 - Dashboard documentation
 - Week 09 validation results
 
-Screenshots are stored under:
+### Dashboard File
+
+`dashboard/TripPulse_Dashboard_Final.pbix`
+
+### Screenshots
+
+Stored under:
 
 `screenshots/`
 
-Dashboard documentation is maintained under:
+### Dashboard Documentation
 
 `docs/dashboard_insights.md`
 
@@ -420,16 +485,18 @@ Completed:
 - Validated KPI cards and approved dashboard visuals
 - Required filters
 - Filter and interaction testing
+- Power BI model relationship validation
 - Cross-page consistency validation
 - Evidence-backed insights and limitations
 - PBI-01 KPI reconciliation
 - PBI-02 KPI reconciliation
 - PBI-03 driver slice reconciliation
 - PBI-03 payment-method slice reconciliation
-- Final dashboard redesign and presentation formatting
+- Final dashboard refinement and presentation formatting
 
-The final PBIX is stored separately because it exceeds the repository
-file-size limit.
+The final Power BI dashboard is included in this repository as:
 
-Supporting screenshots, Gold export evidence, dashboard documentation,
-and validation results are maintained in the repository.
+`dashboard/TripPulse_Dashboard_Final.pbix`
+
+Supporting screenshots, Gold export evidence, dashboard documentation and
+validation results are also maintained in the repository.
