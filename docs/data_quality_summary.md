@@ -1,5 +1,5 @@
 # Data Quality Summary
-**Project:**Trippulse - Urban Mobility Analysis  
+**Project:** Trippulse - Urban Mobility Analysis  
 **Week:** 6  
 **Purpose:** Summarize data quality rules, failures and business impact.
 
