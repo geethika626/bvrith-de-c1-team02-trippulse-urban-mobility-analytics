@@ -1,6 +1,6 @@
 # Data Dictionary
 
-**Project:**Trippulse - Urban Mobility Analysis
+**Project:** TripPulse - Urban Mobility Analysis  
 **Week:** 2  
 **Purpose:** Define the approved raw, reference, Silver Candidate, and streaming fields used in the TripPulse Urban Mobility Analytics project.
 
