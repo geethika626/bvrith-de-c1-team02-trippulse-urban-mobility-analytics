@@ -1,6 +1,6 @@
 # Synthetic Data Assumptions
 
-**Project:** Trippulse - Urban Mobility Analysis
+**Project:** Trippulse - Urban Mobility Analysis   
 **Week:** 2  
 **Purpose:** Document how synthetic data is generated and the assumptions followed for the TripPulse Urban Mobility Analytics project.
 
