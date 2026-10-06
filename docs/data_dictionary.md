@@ -1,6 +1,7 @@
 # Data Dictionary
 
-Week: 2  
+**Project:**Trippulse - Urban Mobility Analysis
+**Week:** 2  
 **Purpose:** Define the approved raw, reference, Silver Candidate, and streaming fields used in the TripPulse Urban Mobility Analytics project.
 
 > **Important:** The source datasets are fictional/synthetic. No real passenger, driver, payment-account, licence, phone, or other real-person identity information is represented.
