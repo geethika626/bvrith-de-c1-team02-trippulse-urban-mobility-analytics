@@ -78,6 +78,9 @@ The goal of Week 5 was to transform the validated TripPulse Bronze Delta tables 
 - `screenshots/week05_07_before_after.png` — Bronze-to-Candidate record comparison
 - `screenshots/week05_08_zones_candidate_schema.png` — Zones Candidate schema
 - `screenshots/week05_09_drivers_candidate_schema.png` — Drivers Candidate schema
+- screenshots/week05_10_trips_candidate_schema.png — Trips Candidate schema
+- screenshots/week05_11_payments_candidate_schema.png — Payments Candidate schema
+- screenshots/week05_12_final_validation.png — Final Validation of Silver Candidate tables
 
 ### Weekly Log
 
