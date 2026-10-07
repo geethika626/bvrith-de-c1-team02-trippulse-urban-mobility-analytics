@@ -37,6 +37,8 @@ consistency, and documenting evidence-backed insights and limitations.
 | Documented dashboard insights and limitations | Team | Done | `docs/dashboard_insights.md` |
 | Updated dashboard README | Team | Done | `dashboard/README.md` |
 | Maintained the final Power BI dashboard in the repository | Team | Done | `dashboard/powerbi_dashboard.pbix` |
+| Reviewed dashboard readability and accessibility across all three pages | Team | Done | Final Power BI dashboard |
+
 
 ---
 
