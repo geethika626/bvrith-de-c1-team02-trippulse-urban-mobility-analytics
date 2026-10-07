@@ -326,7 +326,7 @@ The dashboard does not use:
 
 The final dashboard is maintained under:
 
-`dashboard/TripPulse_Dashboard_Final.pbix`
+`dashboard/powerbi_dashboard.pbix`
 
 Dashboard documentation is maintained under:
 
@@ -545,7 +545,7 @@ the Gold processing notebooks and supporting documentation.
 
 `notebooks/06_powerbi_export.ipynb`
 
-`dashboard/TripPulse_Dashboard_Final.pbix`
+`dashboard/powerbi_dashboard.pbix`
 
 `dashboard/README.md`
 
