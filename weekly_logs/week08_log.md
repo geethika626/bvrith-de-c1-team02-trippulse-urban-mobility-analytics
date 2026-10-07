@@ -115,9 +115,9 @@ as direct visual sources where a validated Gold summary is specified.
 - `screenshots/week08_10_pbi01_page.png`
 - `screenshots/week08_11_pbi01_reconciliation.png`
 - `screenshots/week08_12_cancellation_reconciliation.png`
-- screenshots/week08_13_repeat_run_fingerprint.png
-- screenshots/week08_14_powerbi_datatype.png
-- screenshots/week08_15_relationship_validation.png
+- `screenshots/week08_13_repeat_run_fingerprint.png`
+- `screenshots/week08_14_powerbi_datatype.png`
+- `screenshots/week08_15_relationship_validation.png`
 
 ### Dashboard Documentation
 
