@@ -31,12 +31,12 @@ consistency, and documenting evidence-backed insights and limitations.
 | Reconciled PBI-02 surge trip share and average final fare against Gold | Team | Done | `screenshots/week09_06_pbi02_surge_fare_reconciliation.png` |
 | Reconciled PBI-03 driver metrics against Gold | Team | Done | `screenshots/week09_07_pbi03_driver_reconciliation.png` |
 | Reconciled PBI-03 payment-method metrics against Gold | Team | Done | `screenshots/week09_09_pbi03_payment_reconciliation.png` |
-| Completed KPI cards and approved dashboard visuals | Team | Done | `dashboard/TripPulse_Dashboard_Final.pbix` |
+| Completed KPI cards and approved dashboard visuals | Team | Done | `dashboard/powerbi_dashboard.pbix` |
 | Completed required dashboard filters and slicers | Team | Done | `screenshots/week09_04_filter_validation.png` |
-| Validated the final Power BI model | Team | Done | `dashboard/TripPulse_Dashboard_Final.pbix` |
+| Validated the final Power BI model | Team | Done | `dashboard/powerbi_dashboard.pbix` |
 | Documented dashboard insights and limitations | Team | Done | `docs/dashboard_insights.md` |
 | Updated dashboard README | Team | Done | `dashboard/README.md` |
-| Maintained the final Power BI dashboard in the repository | Team | Done | `dashboard/TripPulse_Dashboard_Final.pbix` |
+| Maintained the final Power BI dashboard in the repository | Team | Done | `dashboard/powerbi_dashboard.pbix` |
 
 ---
 
@@ -86,7 +86,7 @@ consistency, and documenting evidence-backed insights and limitations.
 
 ### Power BI Dashboard
 
-- `dashboard/TripPulse_Dashboard_Final.pbix`
+- `dashboard/powerbi_dashboard.pbix`
 - `dashboard/README.md`
 
 ### Week 09 Screenshots
