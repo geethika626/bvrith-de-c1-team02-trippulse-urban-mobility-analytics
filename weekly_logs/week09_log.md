@@ -100,7 +100,8 @@ consistency, and documenting evidence-backed insights and limitations.
 - `screenshots/week09_05_pbi02_trip_requests_completion_cancellation.png`
 - `screenshots/week09_06_pbi02_surge_fare_reconciliation.png`
 - `screenshots/week09_07_pbi03_driver_reconciliation.png`
-- `screenshots/week09_09_pbi03_payment_reconciliation.png`
+- `screenshots/week09_08_pbi03_payment_reconciliation.png`
+- `screenshots/week09_09_final_model.png`
 
 ### Dashboard Documentation
 
