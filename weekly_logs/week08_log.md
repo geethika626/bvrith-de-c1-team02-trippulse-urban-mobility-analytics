@@ -37,7 +37,7 @@ the Gold layer.
 | Implemented PBI-01 — Ride Operations Overview | Team | Done | `screenshots/week08_10_pbi01_page.png` |
 | Reconciled PBI-01 KPI values against Gold | Team | Done | `screenshots/week08_11_pbi01_reconciliation.png` |
 | Reconciled the cancellation-rate calculation against Gold | Team | Done | `screenshots/week08_12_cancellation_reconciliation.png` |
-| Prepared the final Power BI dashboard file | Team | Done | `dashboard/TripPulse_Dashboard_Final.pbix` |
+| Prepared the final Power BI dashboard file | Team | Done | `dashboard/powerbi_dashboard.pbix` |
 | Updated Power BI dashboard documentation | Team | Done | `dashboard/README.md` |
 
 ---
@@ -85,7 +85,7 @@ the Gold layer.
 
 ### Power BI Dashboard
 
-- `dashboard/TripPulse_Dashboard_Final.pbix`
+- `dashboard/powerbi_dashboard.pbix`
 - `dashboard/README.md`
 
 ### Week 08 Screenshots
