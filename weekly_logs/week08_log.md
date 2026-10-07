@@ -69,6 +69,19 @@ the Gold layer.
 
 ---
 
+### Power BI Gold Model Note
+
+The Power BI model includes the approved TripPulse Gold star schema:
+three dimensions (`dim_date`, `dim_zone`, `dim_driver`), two approved
+Gold facts (`fact_trip`, `fact_payment_attempt`), and the validated
+Gold summary tables.
+
+The dashboard visuals and KPIs are sourced from the validated Gold
+summary outputs according to the approved PBI consumer mapping.
+The detailed Gold facts are retained as approved governed Gold tables
+for reconciliation, lineage and model integrity; they are not used
+as direct visual sources where a validated Gold summary is specified.
+
 ## 4. Blockers / Risks
 
 | Blocker / Risk | Impact | Resolution / Handling |
