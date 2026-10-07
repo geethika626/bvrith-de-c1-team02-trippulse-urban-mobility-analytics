@@ -19,7 +19,7 @@ governed Gold tables for the validation period:
 
 The final Power BI dashboard is included in this folder:
 
-`dashboard/TripPulse_Dashboard_Final.pbix`
+`dashboard/powerbi_dashboard.pbix`
 
 The repository also contains the supporting dashboard documentation,
 screenshots, Gold validation evidence and reconciliation results.
@@ -459,7 +459,7 @@ These include:
 
 ### Dashboard File
 
-`dashboard/TripPulse_Dashboard_Final.pbix`
+`dashboard/powerbi_dashboard.pbix`
 
 ### Screenshots
 
@@ -496,7 +496,7 @@ Completed:
 
 The final Power BI dashboard is included in this repository as:
 
-`dashboard/TripPulse_Dashboard_Final.pbix`
+`dashboard/powerbi_dashboard.pbix`
 
 Supporting screenshots, Gold export evidence, dashboard documentation and
 validation results are also maintained in the repository.
